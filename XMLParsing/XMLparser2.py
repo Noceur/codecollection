@@ -1,13 +1,13 @@
 from xml.etree import ElementTree
 
-'''<world version="1" scale="0.2" viewportzoom="0.6696732" viewportpos="-14347.9560546875 -20300.884765625" boundsmin="-494.9747 -494.9747" boundsmax="494.9747 494.9747">
-  <clusters>
-    <cluster name="Cluster_Debug" displayname="Cluster_Debug" enabled="true" instanced="false" type="OPENPVP_RED" timeregion="AMERICA_EAST" clustertexttag="DEFAULT" speciallocation="" origin="5 5" size="600 601" categoryname="CLUSTER_DEADLANDS" editoroffset="-5139.5380859375 202.757141113281">'''
+#=====================================
 
 tree = ElementTree.parse('world.xml')
 root = tree.getroot()
 child = root[0]
 child2 = root[0][0]
+
+#=====================================
 
 def find_string(searchthrough, tofind): #Takes two strings and tries to find the content of string2 in string1, if it does it prints the index of where it starts.
 	try:
@@ -43,6 +43,8 @@ def loopthroughitems ():
 			#if d.has_key('key'):
  			#print d['key']
 			#print (testfind)
+
+#=====================================
 
 #loopthroughitems()
 

@@ -1,13 +1,13 @@
 from xml.etree import ElementTree
 
-'''<world version="1" scale="0.2" viewportzoom="0.6696732" viewportpos="-14347.9560546875 -20300.884765625" boundsmin="-494.9747 -494.9747" boundsmax="494.9747 494.9747">
-  <clusters>
-    <cluster name="Cluster_Debug" displayname="Cluster_Debug" enabled="true" instanced="false" type="OPENPVP_RED" timeregion="AMERICA_EAST" clustertexttag="DEFAULT" speciallocation="" origin="5 5" size="600 601" categoryname="CLUSTER_DEADLANDS" editoroffset="-5139.5380859375 202.757141113281">'''
+#=====================================
 
 tree = ElementTree.parse('world.xml')
 root = tree.getroot()
 child = root[0]
 child2 = root[0][0]
+
+#=====================================
 
 def find_string(searchthrough, tofind): #Takes two strings and tries to find the content of string2 in string1, if it does it prints the index of where it starts.
 	try:
@@ -30,78 +30,12 @@ def find_string2(searchthrough, tofind): #Takes two strings and tries to find th
 
 def loopthroughitems ():
 	for item in child:	#loops through all items in child and checks if both check1 and check2 is true 
-		test = (item.attrib) #dict
-		#testfind = item.fintext(('cluster').attrib('name'))
+		test = (item.attrib)
 		check1 = find_string2(str(test), "OPENPVP_BLACK")
 		check2 = find_string2(str(test), "EU_20_00")
 		if check1 and check2:
-			#print (test)
 			print (test['name'], test['displayname'])
-			#print (test['displayname\n'] + "\n")
-			#if test.has_key('name')
-			#if d.has_key('key'):
-	 		#print d['key']
-			#print (testfind)
 
-#loopthroughitems()
+#=====================================
 
-
-
-
-
-#doc=ElementTree.fromstring('world.xml')
-testfind = tree.find('.//cluster').attrib['name']
-print (testfind)
-
-testfind2 = tree.find('.//cluster').attrib['displayname']
-print (testfind2)
-
-
-
-
-
-
-
-
-
-
-#if tree.findall('.//cluster'):
-#	test = tree.find('.//cluster')
-#	print (test)
-
-'''for node in tree.find('clusters'):
-    print node.attrib['cluster']
-    # Create sub elements
-    if node.attrib['topic']=="sys/phoneNumber/1":
-        tag = SubElement(node,'TagName')
-        tag.attrib['attr'] = 'AttribValue'
-        '''
-
-
-#for item in child:
-#	print(item.attrib)
-
-
-
-
-#findthis = root.find('name')
-
-'''try:
-	print (findthis.attrib)
-except:
-	print ("fail")'''
-
-
-#print (root[0])
-#print (cofcofroot)
-#test = root.child.tag
-#test2 = test.child.tag
-#print (root.attrib)
-#print (test)
-#print (test2)
-
-#print (cofcofroot.attrib)
-#print (cofcofroot.attrib)
-
-#for child in root:
-#	print(child.tag)
+loopthroughitems()
