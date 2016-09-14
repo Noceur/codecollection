@@ -4,7 +4,7 @@ from xml.etree import ElementTree
 
 doc = [
 	'0098_SW_003_T8_UND_L_180_WLD.cluster.xml',
-	'0099_SW_004_T7_UND_T_0_WLD.cluster.xml'
+	'0099_SW_004_T7_UND_T_0_WLD.cluster.xml',
 ]
 tree = ElementTree.parse(doc[0])
 root = tree.getroot()
@@ -50,6 +50,7 @@ def loopthroughitems2 ():
 	stringtofind = "HIDE_HIGH_NODE"
 	i = 0
 	documentnumber = 0
+	totalfound = 0
 	len(doc)
 
 	while documentnumber < len(doc):
@@ -63,7 +64,11 @@ def loopthroughitems2 ():
 				#print (attribute['name'])
 		print (i, "matches in", doc[documentnumber])
 		documentnumber += 1
+		totalfound += i
 		i = 0
+	#print (totalfound, "matches found in", doc[documentnumber-1], "documents.")
+	print (totalfound, "matches found in", str(documentnumber), "documents.")
+
 
 
 
