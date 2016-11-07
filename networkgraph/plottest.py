@@ -41,22 +41,28 @@ connection2 = [
 	("c4", 8)
 ]
 
+edges = [
+	("A", "c1"),
+	("B", "c2"),
+	("C", "c3"),
+	("D", "c4"),
+	("c1", "c2"),
+	("c2", "c3"),
+	("c3", "c4"),
+	("c4", "c1")
+]
+
 nodes = ["A", "B", "C", "D", "c1", "c2", "c3", "c4"]
+
+edgeLabels = {edges: x for x, edges in enumerate(edges)}
 
 G=nx.Graph()
 
 for n in nodes:
 	G.add_node(n)
 
-G.add_edge("A", "c1")
-G.add_edge("B", "c2")
-G.add_edge("C", "c3")
-G.add_edge("D", "c4")
-G.add_edge("c1", "c2")
-G.add_edge("c2", "c3")
-G.add_edge("c3", "c4")
-G.add_edge("c4", "c1")
-
+for e in edges:
+	G.add_edge(e[0], e[1])
 
 #for c in connections:
 #	G.add_edge(c[0], c[1])
@@ -68,7 +74,7 @@ pos = nx.spectral_layout(G)
 nx.draw_networkx_nodes(G, pos)
 nx.draw_networkx_labels(G, pos)
 nx.draw_networkx_edges(G, pos)
-#nx.draw_networkx_edge_labels(G, pos)
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edgeLabels)
 
 '''colors=[]
 for i in G.nodes_iter():

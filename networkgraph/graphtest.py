@@ -28,7 +28,20 @@ G.add_edge("9", "4")
 G.add_edge("9", "11")
 G.add_edge("11", "8")'''
 
-G=nx.Graph()
+nodes = ["N", "E", "S", "W", "c1", "c2", "c3", "c4"]
+
+edges = [
+    ("N", "c1"),
+    ("E", "c2"),
+    ("S", "c3"),
+    ("W", "c4"),
+    ("c1", "c2"),
+    ("c2", "c3"),
+    ("c3", "c4"),
+    ("c4", "c1")
+]
+
+'''G=nx.Graph()
 G.add_edge("A", "1")
 G.add_edge("B", "2")
 G.add_edge("C", "3")
@@ -44,7 +57,15 @@ G.add_edge("4", "5")
 G.add_edge("5", "6")
 G.add_edge("5", "8")
 G.add_edge("6", "7")
-G.add_edge("7", "8")
+G.add_edge("7", "8")'''
+
+G=nx.Graph()
+
+for n in nodes:
+	G.add_node(n)
+
+for e in edges:
+	G.add_edge(e[0], e[1])
 
 def find_all_paths_lim(graph, start, end, k, path=[]):
     path = path + [start]
@@ -61,13 +82,14 @@ def find_all_paths_lim(graph, start, end, k, path=[]):
                     paths.append(newpath)
     return paths
 
-def two_points(point_a, point_b, max_solutions=5):
+def two_points(point_a, point_b, max_solutions=1):
     i=0
     test_len = []
     while not len(test_len)>max_solutions:
         i += 1
         test_len = find_all_paths_lim(G, point_a, point_b, i)
-    print (test_len, "\n\n")
+    print (point_a + point_b + ":", test_len, "\n\n")
+    test_len.sort(key=len)
     return test_len
 
 def add_point(path, point_c):
@@ -100,22 +122,37 @@ def path_sort(path_to_sort):
 
     r2.sort(key=len)
     r2 = list(r2 for r2,_ in itertools.groupby(r2))
-    #print ("\n\n\n\n\n\n", r2)
-    print (len(r2))
+    print (r2, "\n")
+    #print (len(r2))
     return r2
 
-'''def run_2_points(a, b):
-    path = tw
-
-def run_3_points():
-
-
-def run_4_points():'''
 
 
 
+pathNE = two_points("N", "E")
+pathNS = two_points("N", "S")
+pathNW = two_points("N", "W")
+pathES = two_points("E", "S")
+pathEW = two_points("E", "W")
+pathSW = two_points("S", "W")
 
-path1 = two_points("A", "C")
-#path2 = add_point(path1, "B")
-#path3 = add_point(path2, "D")
-path_sort(path1)
+print ("NES: ")
+pathNES = add_point(pathNE, "S")
+path_sort(pathNES)
+print ("ESW: ")
+pathESW = add_point(pathES, "W")
+path_sort(pathESW)
+print ("SWN: ")
+pathSWN = add_point(pathSW, "N")
+path_sort(pathSWN)
+print ("NEW: ")
+pathNEW = add_point(pathNE, "W")
+path_sort(pathNEW)
+print ("NESW:")
+pathNESW = add_point(pathNES, "W")
+path_sort(pathNESW)
+
+pathNc1 = two_points("N", "c1", 0)
+pathEc2 = two_points("E", "c2", 0)
+PathSc3 = two_points("S", "c3", 0)
+PathWc4 = two_points("W", "c4", 0)

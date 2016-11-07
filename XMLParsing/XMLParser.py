@@ -74,7 +74,6 @@ def loopthroughitems2 ():
 
 
 
-
 doc2 = [
 	'world_live/world.xml',
 	'world_new/world.xml',
