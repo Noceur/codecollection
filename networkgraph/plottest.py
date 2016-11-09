@@ -71,11 +71,6 @@ for e in edges:
 
 pos = nx.spectral_layout(G)
 
-nx.draw_networkx_nodes(G, pos)
-nx.draw_networkx_labels(G, pos)
-nx.draw_networkx_edges(G, pos)
-nx.draw_networkx_edge_labels(G, pos, edge_labels=edgeLabels)
-
 '''colors=[]
 for i in G.nodes_iter():
    colors+=[G.degree(i)]
@@ -84,6 +79,41 @@ for i in range(0,n):
 
 nx.draw_spectral(G,node_color=colors,width=1.5,with_labels=False,alpha=.5,node_size=50,cmap=pylab.cm.Blues,edge_color='w')
 fig.set_facecolor("#000000")'''
+
+def two_points(point_a, point_b, max_solutions=1):
+    i=0
+    test_len = []
+    while not len(test_len)>max_solutions:
+        i += 1
+        test_len = find_all_paths_lim(G, point_a, point_b, i)
+    print (point_a + point_b + ":", test_len, "\n\n")
+    test_len.sort(key=len)
+    return test_len
+
+def find_all_paths_lim(graph, start, end, k, path=[]):
+    path = path + [start]
+    if start == end:
+        return [path]
+    if not start in graph:
+        return []
+    paths = []
+    for node in graph[start]:
+        if node not in path:
+            if len(path) < k+1:
+                newpaths = find_all_paths_lim(graph, node, end, k, path)
+                for newpath in newpaths:
+                    paths.append(newpath)
+    return paths
+
+pathNE = two_points("A", "B")
+
+#colors=range(20)
+#nx.draw(G,pos,node_color='#A0CBE2',edge_color=colors,width=4,edge_cmap=plot.cm.Blues,with_labels=False)
+
+nx.draw_networkx_nodes(G, pos)
+nx.draw_networkx_labels(G, pos)
+nx.draw_networkx_edges(G, pos)
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edgeLabels)
 
 #nx.draw(G)
 plot.axis("off")
