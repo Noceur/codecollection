@@ -22,7 +22,7 @@ def init():
     for e in edges:
     	G.add_edge(e[0], e[1])
 
-    return G
+    return (G, edges)
 
 def find_all_paths_lim(graph, start, end, k, path=[]):
     path = path + [start]
@@ -45,7 +45,7 @@ def two_points(point_a, point_b, max_solutions=0):
     while not len(test_len)>max_solutions:
         i += 1
         test_len = find_all_paths_lim(G, point_a, point_b, i)
-    print (point_a + point_b + ":", test_len, "\n\n")
+    print (point_a + point_b + ":\n" + str(test_len), "\n")
     test_len.sort(key=len)
     return test_len
 
@@ -110,6 +110,7 @@ def draw_graph():
     plot.show()
 
 def paths():
+
     pathNE = two_points("N", "E")
     pathNS = two_points("N", "S")
     pathNW = two_points("N", "W")
@@ -133,13 +134,18 @@ def paths():
     pathNESW = add_point(pathNES, "W")
     path_sort(pathNESW)
 
-    pathNc1 = two_points("N", "c1", 0)
-    pathEc2 = two_points("E", "c1", 0)
-    PathSc3 = two_points("S", "c2", 0)
-    PathWc4 = two_points("W", "c2", 0)
+    #pathNc1 = two_points("N", "c1", 0)
+    #pathEc1 = two_points("E", "c1", 0)
+    #PathSc2 = two_points("S", "c2", 0)
+    #PathWc2 = two_points("W", "c2", 0)
+
+    pathNc2 = two_points(edges[0][0], edges[0][1], 0)
+    pathEc2 = two_points(edges[1][0], edges[1][1], 0)
+    PathSc2 = two_points(edges[2][0], edges[2][1], 0)
+    PathWc2 = two_points(edges[3][0], edges[3][1], 0)
 
 
-G = init()
+G, edges = init()
 
 paths()
 
