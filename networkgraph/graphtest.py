@@ -220,6 +220,10 @@ def paths():
     all_lists.append(pathSc2)
     all_lists.append(pathWc2)
 
+    print (pathNE)
+
+
+
     return all_lists
 
 def rem_bracket(double_bracket):
