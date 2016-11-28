@@ -4,25 +4,27 @@ import itertools
 import matplotlib.pyplot as plot
 import random
 
+edge_list = ["N C_01", "route_01", "E C_01", "route_02", "S C_02", "route_03", "W C_02", "route_04", "C_01 C_02", "route_05"]
+#edge_list2 = ["N C_01", "route_01", "E C_02", "route_02", "S C_03", "route_03", "W C_04", "route_04", "C_01 C_02", "route_05", "C_02 C_03", "route_06", "C_03 C_04", "route_07", "C_04 C_01", "route_08"]
 
-def init():
-    nodes = ["N", "E", "S", "W", "c1", "c2"]
+nodes = ["N", "E", "S", "W", "c1", "c2"]
+#nodes2 = ["N", "E", "S", "W", "C_01", "C_02", "C_03", "C_04"]
 
-    edges = [
-    ("N", "c1"),
-    ("E", "c1"),
-    ("S", "c2"),
-    ("W", "c2"),
-    ("c1", "c2")
-    ]
+edges = [("N", "C_01"), ("E", "C_01"), ("S", "C_02"), ("W", "C_02"), ("C_01", "C_02")]
+#edges2 = [("N", "C_01"), ("E", "C_02"), ("S", "C_03"), ("W", "C_04"), ("C_01", "C_02"), ("C_02", "C_03"), ("C_03", "C_04"), ("C_04", "C_01")]
+
+def init(node_list, list_of_edges):
+    nodes = node_list
+
+    edges = list_of_edges
 
     G=nx.Graph()
 
     for n in nodes:
-    	G.add_node(n)
+        G.add_node(n)
 
     for e in edges:
-    	G.add_edge(e[0], e[1])
+        G.add_edge(e[0], e[1])
 
     return (G, edges)
 
@@ -89,6 +91,8 @@ def two_points(point_a, point_b, max_solutions=0):
         test_len = find_all_paths_lim(G, point_a, point_b, i)
     #print (point_a + point_b + ":\n" + str(test_len), "\n")
     test_len.sort(key=len)
+    if len(test_len) > 1:
+        test_len = test_len[0]
     return test_len
 
 def add_point(path, point_c):
@@ -152,7 +156,7 @@ def draw_graph():
     plot.axis("off")
     plot.show()
 
-def paths():
+def paths(): #probably something is fucked in here
 
     pathNE = two_points("N", "E")
     pathNS = two_points("N", "S")
@@ -187,13 +191,16 @@ def paths():
     pathSc2 = two_points(edges[2][0], edges[2][1], 0)
     pathWc2 = two_points(edges[3][0], edges[3][1], 0)
 
+
     pathNE = rem_bracket(pathNE)
+    #if len(pathNS) > 1:
+    #    pathNS = pathNS[0]
     pathNS = rem_bracket(pathNS)
     pathNW = rem_bracket(pathNW)
     pathES = rem_bracket(pathES)
     pathEW = rem_bracket(pathEW)
     pathSW = rem_bracket(pathSW)
-    pathNES = rem_bracket(pathNES)
+    pathNES = rem_bracket(pathNE)
     pathESW = rem_bracket(pathESW)
     pathSWN = rem_bracket(pathSWN)
     pathNEW = rem_bracket(pathNEW)
@@ -220,7 +227,7 @@ def paths():
     all_lists.append(pathSc2)
     all_lists.append(pathWc2)
 
-    print (pathNE)
+    #print (pathNE)
 
 
 
@@ -228,20 +235,49 @@ def paths():
 
 def rem_bracket(double_bracket):
     new_list = []
-    if len(double_bracket) > 1:
-        print ("list has more than one element")
-        return
+    #print (type(double_bracket))
+    if len(double_bracket) > 1 and not isinstance(double_bracket[0],str):
+        #print (isinstance(double_bracket[0],str))
+        new_list = double_bracket[0]
+        #print ("list has more than one element")
+        return new_list #wrong
+    elif isinstance(double_bracket[0],str):
+        return double_bracket
     else:
         for n in double_bracket:
             new_list = n
         return new_list
 
-G, edges = init()
+def find_route(list_of_lists, list_of_edges):
+    output = []
+    for n in list_of_lists:
+        if len(n)>1:
+            #print (n[0], n[1])
+            combine = n[0] + " " + n[1]
+            for i in [i for i,x in enumerate(list_of_edges) if x == combine]:
+                output.append(list_of_edges[(i+1)])
+        else:
+            output.append(list_of_edges[1])
+    
+    set2 = set(output)
+    result = list(set2)
+    return result
+
+G, edges = init(nodes, edges)
 
 all_lists = paths()
 
-
 #draw_graph()
 
-#for n in all_lists:
-#    print (n)
+#path_names = ["NE", "NS", "NW", "ES", "EW", "SW", "NES", "ESW", "SWN", "NEW", "NESW", "N dead", "E dead", "S dead", "W dead"]
+
+for n in all_lists:
+    print_list = ""
+    list_of_tuples = list(itertools.permutations(n))
+    list_of_lists = [list(elem) for elem in list_of_tuples]
+    routes = find_route(list_of_lists, edge_list)
+    routes = sorted(routes)
+    for i in routes:
+        print_list += "'" + i + "_on'" + ", "
+    print_list = print_list[:-2]
+    print (print_list)
