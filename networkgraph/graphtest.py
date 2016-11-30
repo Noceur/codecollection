@@ -5,6 +5,15 @@ import matplotlib.pyplot as plot
 import random
 import re
 
+##################################
+#          DATA SECTION
+#      FROM THE GOOGLE SHEET
+##################################
+
+
+
+
+
 edge_list = ["N C_01", "route_01", "E C_01", "route_02", "S C_02", "route_03", "W C_02", "route_04", "C_01 C_02", "route_05"]
 nodes = ['N', 'E', 'S', 'W', 'C_01', 'C_02', 'C_02']
 edges = [('N', 'C_01'), ('E', 'C_01'), ('S', 'C_02'), ('W', 'C_02'), ('C_01', 'C_02')]
@@ -14,6 +23,13 @@ crossing_01 = ['route', "C_01", 'route_01', 'route_02', 'route_05', 'none']
 crossing_02 = ['route', "C_02", 'route_05', 'none', 'route_03', 'route_04']
 list_of_crossings = ['crossing_01', 'crossing_02']
 
+
+
+
+
+##################################
+#        END OF SHEET DATA
+##################################
 
 def init(node_list, list_of_edges):
     nodes = node_list
@@ -296,6 +312,53 @@ def get_crossing(crossing, print_list):
     crossing = find_crossing(crossing_result[0], crossing_result[1], crossing_result[2], crossing_result[3], crossing_result[4], crossing_result[5])
     return crossing
 
+def main_func():
+    loop_count = 0
+    for n, x in itertools.zip_longest(all_lists, path_names):
+        loop_count += 1
+        print_list = ""
+        #crossing_result = [crossing_01[0], False, False, False, False]
+        index = ""
+        crossings = []
+
+
+        list_of_tuples = list(itertools.permutations(n))
+        list_of_lists = [list(elem) for elem in list_of_tuples]
+        routes = find_route(list_of_lists, edge_list)
+        routes = sorted(routes)
+        for i in routes:
+            if 'NONE' in i:
+                continue
+            print_list += "'" + i + "_on'" + ", "
+        #print_list = print_list[:-2]
+        for r in route_list:
+            if not r in print_list and not 'NONE' in r:
+                print_list += "'" + r + "_off'" + ", "
+        print_list = print_list[:-2]
+        #for c in list_of_crossings:
+        #    crossings.append(get_crossing(eval(c), print_list))
+        #for c in crossing_01[1:]:
+        #    if (c + "_on") in print_list:
+        #        index = get_index(crossing_01, c)
+        #        crossing_result[index] = True
+        #crossing = find_crossing(crossing_result[0], crossing_result[1], crossing_result[2], crossing_result[3], crossing_result[4])
+        #print (x + "\n" + print_list + ", " + str(crossings) + "\n\n")
+        cross = []
+        s = ""
+        for c in list_of_crossings:
+            cross.append(get_crossing(eval(c), print_list))
+        #s += (cross[0] + cross[1])
+
+        s += "(" + ', '.join(map(str,cross)) + ")"
+        s = re.sub('[(){}<>]', '', s)
+        teststring = (x + "\t=counta(indirect(ADDRESS(row()+1,COLUMN()-1)):indirect(address(row()+3,column()-1)))\n" + print_list + ", \t" + s + "\n\n")
+        teststring = re.sub("\'\[", "['", teststring)
+        teststring = re.sub("\]\'", "']", teststring)
+        print (teststring)
+    if loop_count == 15:
+        print (str(loop_count) + " paths found. This is valid data.")
+    else:
+        print ("ERROR")
 
 G, edges = init(nodes, edges)
 
@@ -305,55 +368,6 @@ all_lists = paths()
 
 path_names = ["NE", "NS", "NW", "ES", "EW", "SW", "NES", "ESW", "SWN", "NEW", "NESW", "N", "E", "S", "W"]
 
-loop_count = 0
 
 
-
-
-
-for n, x in itertools.zip_longest(all_lists, path_names):
-    loop_count += 1
-    print_list = ""
-    #crossing_result = [crossing_01[0], False, False, False, False]
-    index = ""
-    crossings = []
-
-
-    list_of_tuples = list(itertools.permutations(n))
-    list_of_lists = [list(elem) for elem in list_of_tuples]
-    routes = find_route(list_of_lists, edge_list)
-    routes = sorted(routes)
-    for i in routes:
-        if 'NONE' in i:
-            continue
-        print_list += "'" + i + "_on'" + ", "
-    #print_list = print_list[:-2]
-    for r in route_list:
-        if not r in print_list and not 'NONE' in r:
-            print_list += "'" + r + "_off'" + ", "
-    print_list = print_list[:-2]
-    #for c in list_of_crossings:
-    #    crossings.append(get_crossing(eval(c), print_list))
-    #for c in crossing_01[1:]:
-    #    if (c + "_on") in print_list:
-    #        index = get_index(crossing_01, c)
-    #        crossing_result[index] = True
-    #crossing = find_crossing(crossing_result[0], crossing_result[1], crossing_result[2], crossing_result[3], crossing_result[4])
-    #print (x + "\n" + print_list + ", " + str(crossings) + "\n\n")
-    cross = []
-    s = ""
-    for c in list_of_crossings:
-        cross.append(get_crossing(eval(c), print_list))
-    #s += (cross[0] + cross[1])
-
-    s += "(" + ', '.join(map(str,cross)) + ")"
-    s = re.sub('[(){}<>]', '', s)
-    teststring = (x + "\t=counta(indirect(ADDRESS(row()+1,COLUMN()-1)):indirect(address(row()+3,column()-1)))\n" + print_list + ", \t" + s + "\n\n")
-    teststring = re.sub("\'\[", "['", teststring)
-    teststring = re.sub("\]\'", "']", teststring)
-    print (teststring)
-if loop_count == 15:
-	print ("\n\n" + str(loop_count) + " paths found. This is correct data.")
-else:
-	print ("ERROR")
-
+main_func()
