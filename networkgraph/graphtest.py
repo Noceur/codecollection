@@ -15,13 +15,12 @@ import re
 
 
 edge_list = ["N C_01", "route_01", "E C_01", "route_02", "S C_02", "route_03", "W C_02", "route_04", "C_01 C_02", "route_05"]
-nodes = ['N', 'E', 'S', 'W', 'C_01', 'C_02', 'C_02']
+nodes = ['N', 'E', 'S', 'W', 'C_01', 'C_02', 'C_02', 'crossing_01', 'C_01']
 edges = [('N', 'C_01'), ('E', 'C_01'), ('S', 'C_02'), ('W', 'C_02'), ('C_01', 'C_02')]
 route_list = ['route_01', 'route_02', 'route_03', 'route_04', 'route_05']
-
-crossing_01 = ['route', "C_01", 'route_01', 'route_02', 'route_05', 'none']
-crossing_02 = ['route', "C_02", 'route_05', 'none', 'route_03', 'route_04']
 list_of_crossings = ['crossing_01', 'crossing_02']
+crossing_01 = ['route', 'C_01', 'route_01', 'route_02', 'route_05', 'none']
+crossing_02 = ['route', 'C_02', 'route_05', 'none', 'route_03', 'route_04']
 
 
 
@@ -367,7 +366,5 @@ all_lists = paths()
 #draw_graph()
 
 path_names = ["NE", "NS", "NW", "ES", "EW", "SW", "NES", "ESW", "SWN", "NEW", "NESW", "N", "E", "S", "W"]
-
-
 
 main_func()

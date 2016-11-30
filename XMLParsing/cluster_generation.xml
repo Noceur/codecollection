@@ -1,76 +1,7 @@
 <?xml version="1.0" ?>
 <clusters>
-  <cluster path="Assets/Levels/_EXPORT/ThirdGenerationWorld/test2.unity">
-    <master orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Master/001_L1_M3_S5.unity" position="0 0 0">
-      <layer name="route_01_on"/>
-      <layer name="route_02_on"/>
-      <layer name="route_03_off"/>
-      <layer name="route_04_off"/>
-      <layer name="route_05_off"/>
-    </master>
-    <template id="B_01" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
-      <layer name="sea_sea_01"/>
-    </template>
-    <template id="B_02" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="B_03" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Exit_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="B_04" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="B_05" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
-      <layer name="sea_swamp_01"/>
-    </template>
-    <template id="B_06" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
-    </template>
-    <template id="B_07" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Exit_01.unity" rotatewithmaster="true">
-      <layer name="swamp_01"/>
-    </template>
-    <template id="B_08" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
-    </template>
-    <template id="B_09" orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
-      <layer name="swamp_swamp_01"/>
-    </template>
-    <template id="B_10" orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_01"/>
-    </template>
-    <template id="B_11" orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
-    </template>
-    <template id="B_12" orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
-    </template>
-    <template id="B_13" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
-      <layer name="swamp_sea_01"/>
-    </template>
-    <template id="B_14" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="B_15" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="B_16" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="sea_01"/>
-    </template>
-    <template id="C_01" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/S_SW_StreetCrossing.unity" rotatewithmaster="true">
-      <layer name="route_L"/>
-    </template>
-    <template id="C_02" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/S_SW_StreetCrossing.unity" rotatewithmaster="true">
-      <layer name="none"/>
-    </template>
-    <template id="0" orientation="L_01" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/a.unity" rotatewithmaster="false"/>
-    <template id="0" orientation="L_02" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/b.unity" rotatewithmaster="false"/>
-    <template id="0" orientation="M_01" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/c.unity" rotatewithmaster="false"/>
-    <template id="0" orientation="M_02" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/d.unity" rotatewithmaster="false"/>
-    <template id="0" orientation="S_01" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/e.unity" rotatewithmaster="false"/>
-    <template id="0" orientation="S_02" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/f.unity" rotatewithmaster="false"/>
-  </cluster>
   <cluster path="Assets/Levels/_EXPORT/ThirdGenerationWorld/test.unity">
-    <master orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Master/001_L1_M3_S5.unity" position="0 0 0">
+    <master orientation="180" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Master/004_L2_M3_S5.unity" position="0 0 0">
       <layer name="route_01_on"/>
       <layer name="route_02_on"/>
       <layer name="route_04_on"/>
@@ -93,25 +24,25 @@
       <layer name="sea_swamp_01"/>
     </template>
     <template id="B_14" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
+      <layer name="swamp_01"/>
     </template>
     <template id="B_15" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Exit_01.unity" rotatewithmaster="true">
       <layer name="swamp_01"/>
     </template>
     <template id="B_16" orientation="270" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_01"/>
+      <layer name="swamp_02"/>
     </template>
     <template id="B_01" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
       <layer name="swamp_swamp_01"/>
     </template>
     <template id="B_02" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
-    </template>
-    <template id="B_03" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Exit_01.unity" rotatewithmaster="true">
       <layer name="swamp_01"/>
     </template>
-    <template id="B_04" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
+    <template id="B_03" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
+      <layer name="swamp_01"/>
+    </template>
+    <template id="B_04" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Exit_01.unity" rotatewithmaster="true">
+      <layer name="swamp_01"/>
     </template>
     <template id="B_05" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Corner_01.unity" rotatewithmaster="true">
       <layer name="swamp_swamp_01"/>
@@ -123,7 +54,7 @@
       <layer name="guardtowers_outland_01"/>
     </template>
     <template id="B_08" orientation="90" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/B_SW_Straight_01.unity" rotatewithmaster="true">
-      <layer name="swamp_02"/>
+      <layer name="swamp_01"/>
     </template>
     <template id="C_01" orientation="0" path="Assets/Levels/LEVEL_TEMPLATES/WORLD/Swamp/Slave/S_SW_StreetCrossing.unity" rotatewithmaster="true">
       <layer name="route_T"/>
