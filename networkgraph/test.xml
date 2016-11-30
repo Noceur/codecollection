@@ -1,0 +1,36 @@
+<clusters>
+  <cluster>
+    <master orientation="0" path="PATH_TO_TEMPLATE" position="0 0 0">
+      <layer name="route_1"/>
+      <layer name="route_2"/>
+      <layer name="route_1"/>
+      <layer name="route_2"/>
+      <layer name="route_3"/>
+      <layer name="route_4"/>
+      <layer name="route_5"/>
+      <layer name="route_6"/>
+      <layer name="route_7"/>
+      <layer name="route_8"/>
+      <layer name="route_9"/>
+      <layer name="route_10"/>
+    </master>
+    <template orientation="0" path="PATH_TO_TEMPLATE"/>
+  </cluster>
+  <cluster>
+    <master orientation="0" path="PATH_TO_TEMPLATE" position="0 0 0">
+      <layer name="route_1"/>
+      <layer name="route_2"/>
+      <layer name="route_1"/>
+      <layer name="route_2"/>
+      <layer name="route_3"/>
+      <layer name="route_4"/>
+      <layer name="route_5"/>
+      <layer name="route_6"/>
+      <layer name="route_7"/>
+      <layer name="route_8"/>
+      <layer name="route_9"/>
+      <layer name="route_10"/>
+    </master>
+    <template orientation="0" path="PATH_TO_TEMPLATE"/>
+  </cluster>
+</clusters>

@@ -101,10 +101,10 @@ def break_down_list(clusterlist):
 
 clusters = Element("clusters")
 
-#with open('filename.csv') as csvfile:
-#	csvreader = csv.reader(csvfile)
-#	for row in csvreader:
-#		break_down_list(ast.literal_eval((row[0])))
+with open('filename.csv') as csvfile:
+	csvreader = csv.reader(csvfile)
+	for row in csvreader:
+		break_down_list(ast.literal_eval((row[0])))
 
 		#break_down_list(row[0])
 		#to_list = list(row[0])
@@ -116,9 +116,9 @@ clusters = Element("clusters")
 
 
 testlist4 = [['test', 'Forest'], ['201_L1_M3_S5', '270', ['route 2']], ['FR_Corner_01', 'B_05', '90', ['sea_sea_01']], ['FR_Straight_01', 'B_06', '90', ['sea_01']], ['FR_Exit_01', 'B_07', '90', ['sea_01']], ['FR_Straight_01', 'B_08', '90', []], ['FR_Corner_01', 'B_09', '180', ['sea_river_01']], ['FR_Straight_01', 'B_10', '180', ['river_01']], ['FR_Straight_01', 'B_11', '180', ['river_01']], ['FR_Straight_01', 'B_12', '180', ['river_01']], ['FR_Corner_01', 'B_13', '270', ['river_river_01']], ['FR_Straight_01', 'B_14', '270', ['river_01']], ['FR_Straight_01', 'B_15', '270', ['river_01']], ['FR_Straight_01', 'B_16', '270', ['river_01']], ['FR_Corner_01', 'B_01', '0', ['river_sea_01']], ['FR_Straight_01', 'B_02', '0', ['sea_01']], ['FR_Straight_01', 'B_03', '0', ['sea_01']], ['FR_Straight_01', 'B_04', '0', ['sea_01']]]
-testlist5 = [['test2', 'Forest'], ['201_L1_M3_S5', '0', ['route 1', 'route 3', 'route 4', 'route 5']], ['B_FR_Corner_01', 'B_01', '0', ['sea_sea_01']], ['B_FR_Straight_01', 'B_02', '0', ['sea_01']], ['B_FR_Exit_01', 'B_03', '0', ['sea_01']], ['B_FR_Straight_01', 'B_04', '0', ['sea_01']], ['B_FR_Corner_01', 'B_05', '90', ['sea_river_01']], ['B_FR_Straight_01', 'B_06', '90', ['river_01']], ['B_FR_Straight_01', 'B_07', '90', ['river_01']], ['B_FR_Straight_01', 'B_08', '90', ['river_01']], ['B_FR_Corner_01', 'B_09', '180', ['river_river_01']], ['B_FR_Straight_01', 'B_10', '180', ['river_01']], ['B_FR_Exit_01', 'B_11', '180', ['river_01']], ['B_FR_Straight_01', 'B_12', '180', ['river_01']], ['B_FR_Corner_01', 'B_13', '270', ['river_sea_01']], ['B_FR_Straight_01', 'B_14', '270', ['sea_01']], ['B_FR_Exit_01', 'B_15', '270', ['sea_01']], ['B_FR_Straight_01', 'B_16', '270', ['sea_01']]]
+testlist5 = [['test2', 'Swamp'], ['001_L1_M3_S5', '0', ['route_01_on', 'route_02_on', 'route_03_off', 'route_04_off', 'route_05_off',]], ['B_SW_Corner_01', 'B_01', '0', ['sea_sea_01']], ['B_SW_Straight_01', 'B_02', '0', ['sea_01']], ['B_SW_Exit_01', 'B_03', '0', ['sea_01']], ['B_SW_Straight_01', 'B_04', '0', ['sea_01']], ['B_SW_Corner_01', 'B_05', '90', ['sea_swamp_01']], ['B_SW_Straight_01', 'B_06', '90', ['swamp_02']], ['B_SW_Exit_01', 'B_07', '90', ['swamp_01']], ['B_SW_Straight_01', 'B_08', '90', ['swamp_02']], ['B_SW_Corner_01', 'B_09', '180', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_10', '180', ['swamp_01']], ['B_SW_Straight_01', 'B_11', '180', ['swamp_02']], ['B_SW_Straight_01', 'B_12', '180', ['swamp_02']], ['B_SW_Corner_01', 'B_13', '270', ['swamp_sea_01']], ['B_SW_Straight_01', 'B_14', '270', ['sea_01']], ['B_SW_Straight_01', 'B_15', '270', ['sea_01']], ['B_SW_Straight_01', 'B_16', '270', ['sea_01']],['S_SW_StreetCrossing', 'C_01', '0', ['route_L'], 'true'], ['S_SW_StreetCrossing', 'C_02', '0', ['none'], 'true'],['a', '0', 'L_01', [], 'false'],['b', '0', 'L_02', [], 'false'],['c', '0', 'M_01', [], 'false'],['d', '0', 'M_02', [], 'false'],['e', '0', 'S_01', [], 'false'],['f', '0', 'S_02', [], 'false']]
 
-break_down_list(testlist5)
+#break_down_list(testlist5)
 
 
 print (prettify(clusters))
