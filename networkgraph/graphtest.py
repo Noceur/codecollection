@@ -13,15 +13,12 @@ import re
 
 
 
-
-edge_list = ["N C_01", "route_01", "E C_01", "route_02", "S C_02", "route_03", "W C_02", "route_04", "C_01 C_02", "route_05"]
-nodes = ['N', 'E', 'S', 'W', 'C_01', 'C_02', 'C_02']
-edges = [('N', 'C_01'), ('E', 'C_01'), ('S', 'C_02'), ('W', 'C_02'), ('C_01', 'C_02')]
-route_list = ['route_01', 'route_02', 'route_03', 'route_04', 'route_05']
-list_of_crossings = ['crossing_01', 'crossing_02']
-crossing_01 = ['route', 'C_01', 'route_01', 'route_02', 'route_05', 'none']
-crossing_02 = ['route', 'C_02', 'route_05', 'none', 'route_03', 'route_04']
-
+edge_list = ["N C_01", "route_01", "E C_01", "route_02", "S C_01", "route_03", "W C_01", "route_04"]
+nodes = ['N', 'E', 'S', 'W', 'C_01']
+edges = [('N', 'C_01'), ('E', 'C_01'), ('S', 'C_01'), ('W', 'C_01')]
+route_list = ['route_01', 'route_02', 'route_03', 'route_04']
+list_of_crossings = ['crossing_01']
+crossing_01 = ['route', 'C_01', 'route_01', 'route_02', 'route_03', 'route_04']
 
 
 
@@ -52,54 +49,54 @@ def init(node_list, list_of_edges):
 def find_crossing(roadtype, slot, N_con=False, E_con=False, S_con=False, W_con=False):
     biome = "HL"
     if   N_con == True      and E_con == False      and S_con ==False       and W_con == False:
-        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_D]", "true]")
+        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_D_01]", "true]")
         #return (roadtype + "_D"), "0"
     elif N_con == True      and E_con == False      and S_con == True       and W_con == False:
         rotations = ["0", "180"]
-        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_I]", "true]")
+        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_I_01]", "true]")
         #return (roadtype + "_I"), random.choice(rotations)
     elif N_con == True      and E_con == True       and S_con == False      and W_con == False:
-        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_L]", "true]")
+        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_L_01]", "true]")
         #return (roadtype + "_L"), "0"
     elif N_con == True      and E_con == True       and S_con == True       and W_con == False:
-        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_T]", "true]")
+        return ("[|_StreetCrossing", slot, "0", "[" + roadtype + "_T_01]", "true]")
         #return (roadtype + "_T"), "0"
     elif N_con == True      and E_con == True       and S_con == True       and W_con == True:
         rotations = ["0", "90", "180", "270"]
-        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_X]", "true]")
+        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_X_01]", "true]")
         #return (roadtype + "_X"), random.choice(rotations)
     elif N_con == True      and E_con == False      and S_con == True       and W_con == True:
-        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_T]", "true]")
+        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_T_01]", "true]")
         #return (roadtype + "_T"), "180"
     elif N_con == True      and E_con == False      and S_con == False      and W_con == True:
-        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_L]", "true]")
+        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_L_01]", "true]")
         #return (roadtype + "_L"), "270"
     elif N_con == True      and E_con == True       and S_con == False      and W_con == True:
-        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_T]", "true]")
+        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_T_01]", "true]")
         #return (roadtype + "_T"), "270"
 
     elif N_con == False     and E_con == True       and S_con == False      and W_con == False:
-        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_D]", "true]")
+        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_D_01]", "true]")
         #return (roadtype + "_D"), "90"
     elif N_con == False     and E_con == True       and S_con == False      and W_con == True:
         rotations = ["90", "270"]
-        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_I]", "true]")
+        return ("[|_StreetCrossing", slot, random.choice(rotations), "[" + roadtype + "_I_01]", "true]")
         #return (roadtype + "_I"), random.choice(rotations)
     elif N_con == False     and E_con == True       and S_con == True       and W_con == False:
-        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_L]", "true]")
+        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_L_01]", "true]")
         #return (roadtype + "_L"), "90"
     elif N_con == False     and E_con == True       and S_con == True       and W_con == True:
-        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_T]", "true]")
+        return ("[|_StreetCrossing", slot, "90", "[" + roadtype + "_T_01]", "true]")
         #return (roadtype + "_T"), "90"
 
     elif N_con == False     and E_con == False      and S_con == True       and W_con == False:
-        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_D]", "true]")
+        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_D_01]", "true]")
         #return (roadtype + "_D"), "180"
     elif N_con == False     and E_con == False      and S_con == True       and W_con == True:
-        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_L]", "true]")
+        return ("[|_StreetCrossing", slot, "180", "[" + roadtype + "_L_01]", "true]")
         #return (roadtype + "_L"), "180"
     elif N_con == False     and E_con == False      and S_con == False      and W_con == True:
-        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_D]", "true]")
+        return ("[|_StreetCrossing", slot, "270", "[" + roadtype + "_D_01]", "true]")
         #return (roadtype + "_D"), "270"
 
     else:
