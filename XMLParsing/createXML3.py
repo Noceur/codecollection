@@ -101,10 +101,10 @@ def break_down_list(clusterlist):
 
 clusters = Element("clusters")
 
-#with open('filename.csv') as csvfile:
-#	csvreader = csv.reader(csvfile)
-#	for row in csvreader:
-#		break_down_list(ast.literal_eval((row[0])))
+with open('data.csv') as csvfile:
+	csvreader = csv.reader(csvfile)
+	for row in csvreader:
+		break_down_list(ast.literal_eval((row[0])))
 
 		#break_down_list(row[0])
 		#to_list = list(row[0])
@@ -117,7 +117,7 @@ clusters = Element("clusters")
 
 testlist5 = [['cluster_ID6', 'Swamp'], ['001_L1_M3_S5', '90', ['route_01_on', 'route_03_on', 'route_04_on', 'route_07_on', 'route_08_on', 'route_02_off', 'route_05_off', 'route_06_off',]], ['B_SW_Corner_01', 'B_01', '270', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_02', '0', ['swamp_02']], ['B_SW_Exit_01', 'B_03', '0', ['guardtower_outland_01']], ['B_SW_Straight_01', 'B_04', '0', ['swamp_02']], ['B_SW_Corner_01', 'B_05', '0', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_06', '90', ['swamp_02']], ['B_SW_Straight_01', 'B_07', '90', ['swamp_02']], ['B_SW_Straight_01', 'B_08', '90', ['swamp_02']], ['B_SW_Corner_01', 'B_09', '90', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_10', '180', ['swamp_02']], ['B_SW_Exit_01', 'B_11', '180', ['swamp_01']], ['B_SW_Straight_01', 'B_12', '180', ['swamp_02']], ['B_SW_Corner_01', 'B_13', '180', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_14', '270', ['swamp_01']], ['B_SW_Exit_01', 'B_15', '270', ['swamp_01']], ['B_SW_Straight_01', 'B_16', '270', ['swamp_02']],['SW_StreetCrossing', 'C_01', '180', ['route_I_01'], 'true'], ['SW_StreetCrossing', 'C_02', '0', ['NONE'], 'true'], ['SW_StreetCrossing', 'C_03', '180', ['route_L_01'], 'true'], ['SW_StreetCrossing', 'C_04', '180', ['route_T_01'], 'true']]
 
-break_down_list(testlist5)
+#break_down_list(testlist5)
 
 
 print (prettify(clusters))
