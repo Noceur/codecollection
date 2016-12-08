@@ -11,7 +11,7 @@ class cluster():
 	def __init__(self, cluster_name, biome):
 		self.cluster = ""
 		self.cluster_name = cluster_name
-		self.cluster_path = ("Assets/Levels/_EXPORT/ThirdGenerationWorld/" + cluster_name + ".unity")
+		self.cluster_path = ("Assets/Levels/_EXPORT/ThirdGenerationWorld/Openworld_Clusters/" + cluster_name + ".unity")
 		self.master = ""
 		self.biome = biome
 		self.layer = ""
