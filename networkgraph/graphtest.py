@@ -5,6 +5,11 @@ import matplotlib.pyplot as plot
 import random
 import re
 
+
+#  Usage: grab shit from Cluster sheets: Routes!*101 and replace lines in data section
+#  paste all route output starting from NE of the corresponding master template. Done.
+
+
 ##################################
 #          DATA SECTION
 #      FROM THE GOOGLE SHEET
@@ -12,15 +17,14 @@ import re
 
 
 
-
-edge_list = ["N C_01", "route_01", "E C_02", "route_02", "S C_03", "route_03", "W C_04", "route_04", "C_01 C_02", "route_05", "C_02 C_03", "route_06", "C_03 C_04", "route_07", "C_04 C_01", "route_08"]
+edge_list = ["N C_01", "route_01", "E C_02", "route_02", "S C_03", "route_03", "W C_04", "route_04", "C_01 C_02", "route_05", "C_02 C_03", "route_06", "C_03 C_04", "route_07", "C_01 C_04", "route_08"]
 nodes = ['N', 'E', 'S', 'W', 'C_01', 'C_02', 'C_03', 'C_04', 'C_02', 'C_03', 'C_04']
-edges = [('N', 'C_01'), ('E', 'C_02'), ('S', 'C_03'), ('W', 'C_04'), ('C_01', 'C_02'), ('C_02', 'C_03'), ('C_03', 'C_04'), ('C_04', 'C_01'), ('C_02', 'C_03'), ('C_03', 'C_04'), ('C_04', 'C_01')]
+edges = [('N', 'C_01'), ('E', 'C_02'), ('S', 'C_03'), ('W', 'C_04'), ('C_01', 'C_02'), ('C_02', 'C_03'), ('C_03', 'C_04'), ('C_01', 'C_04'), ('C_02', 'C_03'), ('C_03', 'C_04'), ('C_01', 'C_04')]
 route_list = ['route_01', 'route_02', 'route_03', 'route_04', 'route_05', 'route_06', 'route_07', 'route_08']
 list_of_crossings = ['crossing_01', 'crossing_02', 'crossing_03', 'crossing_04']
-crossing_01 = ['route', 'C_01', 'route_01', 'route_05', 'route_08', 'none']
+crossing_01 = ['route', 'C_01', 'route_01', 'route_05', 'none', 'route_08']
 crossing_02 = ['route', 'C_02', 'route_05', 'route_02', 'route_06', 'none']
-crossing_03 = ['route', 'C_03', 'route_07', 'route_06', 'route_03', 'none']
+crossing_03 = ['route', 'C_03', 'none', 'route_06', 'route_03', 'route_07']
 crossing_04 = ['route', 'C_04', 'route_08', 'none', 'route_07', 'route_04']
 
 

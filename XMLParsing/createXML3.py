@@ -7,6 +7,8 @@ import ast
 
 errors = []
 
+clusters = Element("clusters")
+
 class cluster():
 	def __init__(self, cluster_name, biome):
 		self.cluster = ""
@@ -99,25 +101,25 @@ def break_down_list(clusterlist):
 
 	#print (test)
 
-clusters = Element("clusters")
+def csv_to_cluster(datafile='data.csv'):
+	with open(datafile) as csvfile:
+		csvreader = csv.reader(csvfile)
+		for row in csvreader:
+			break_down_list(ast.literal_eval((row[0])))
 
-with open('data.csv') as csvfile:
-	csvreader = csv.reader(csvfile)
-	for row in csvreader:
-		break_down_list(ast.literal_eval((row[0])))
+			#break_down_list(row[0])
+			#to_list = list(row[0])
+			#to_list = to_list[:-1]
 
-		#break_down_list(row[0])
-		#to_list = list(row[0])
-		#to_list = to_list[:-1]
-
-		#break_down_list(to_list)
-		#to_list = row[0]
-		#print (to_list)
+			#break_down_list(to_list)
+			#to_list = row[0]
+			#print (to_list)
 
 
-testlist5 = [['cluster_ID6', 'Swamp'], ['001_L1_M3_S5', '90', ['route_01_on', 'route_03_on', 'route_04_on', 'route_07_on', 'route_08_on', 'route_02_off', 'route_05_off', 'route_06_off',]], ['B_SW_Corner_01', 'B_01', '270', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_02', '0', ['swamp_02']], ['B_SW_Exit_01', 'B_03', '0', ['guardtower_outland_01']], ['B_SW_Straight_01', 'B_04', '0', ['swamp_02']], ['B_SW_Corner_01', 'B_05', '0', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_06', '90', ['swamp_02']], ['B_SW_Straight_01', 'B_07', '90', ['swamp_02']], ['B_SW_Straight_01', 'B_08', '90', ['swamp_02']], ['B_SW_Corner_01', 'B_09', '90', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_10', '180', ['swamp_02']], ['B_SW_Exit_01', 'B_11', '180', ['swamp_01']], ['B_SW_Straight_01', 'B_12', '180', ['swamp_02']], ['B_SW_Corner_01', 'B_13', '180', ['swamp_swamp_01']], ['B_SW_Straight_01', 'B_14', '270', ['swamp_01']], ['B_SW_Exit_01', 'B_15', '270', ['swamp_01']], ['B_SW_Straight_01', 'B_16', '270', ['swamp_02']],['SW_StreetCrossing', 'C_01', '180', ['route_I_01'], 'true'], ['SW_StreetCrossing', 'C_02', '0', ['NONE'], 'true'], ['SW_StreetCrossing', 'C_03', '180', ['route_L_01'], 'true'], ['SW_StreetCrossing', 'C_04', '180', ['route_T_01'], 'true']]
+testlist5 = [['t4208_WRL_MN_T4_UND_ROY', 'Mountain'], ['803_L2_M2_S5', '270', ['route_01_on', 'route_02_on', 'route_03_on', 'route_05_on', 'route_04_off',]], ['B_MN_Corner_01', 'B_01', '270', ['low_low_01']], ['B_MN_Straight_01', 'B_02', '0', ['low_01']], ['B_MN_Exit_01', 'B_03', '0', ['low_01']], ['B_MN_Straight_01', 'B_04', '0', ['low_01']], ['B_MN_Corner_01', 'B_05', '0', ['low_low_01']], ['B_MN_Straight_01', 'B_06', '90', ['low_01']], ['B_MN_Exit_01', 'B_07', '90', ['low_01']], ['B_MN_Straight_01', 'B_08', '90', ['low_01']], ['B_MN_Corner_01', 'B_09', '90', ['low_low_01']], ['B_MN_Straight_01', 'B_10', '180', ['low_01']], ['B_MN_Exit_01', 'B_11', '180', ['guardtower_royal_01']], ['B_MN_Straight_01', 'B_12', '180', ['low_01']], ['B_MN_Corner_01', 'B_13', '180', ['low_low_01']], ['B_MN_Straight_01', 'B_14', '270', ['low_01']], ['B_MN_Straight_01', 'B_15', '270', ['low_01']], ['B_MN_Straight_01', 'B_16', '270', ['low_01']],['MN_StreetCrossing', 'C_01', '0', ['route_T_01'], 'true'], ['MN_StreetCrossing', 'C_02', '90', ['route_L_01'], 'true'],['L_MN_SnowVolcano_01', 'L_01', '0', [], 'false'],['M_MN_DungeonEntrance_Undead_01', 'M_01', '0', ['T4'], 'false'],['M_MN_VolcanoField_01', 'M_02', '0', [], 'false'],['M_MN_MountainLake_01', 'M_03', '0', [], 'false'],['S_MN_DungeonEntrance_Undead_01', 'S_01', '0', ['T4'], 'false'],['S_MN_DungeonEntrance_Undead_01', 'S_02', '0', ['T4'], 'false'],['S_MN_RuinOnTop_01', 'S_03', '0', [], 'false'],['S_MN_Watchtower_01', 'S_04', '0', [], 'false'],['S_MN_DungeonEntrance_Undead_01', 'S_05', '0', ['T4'], 'false']]
 
-#break_down_list(testlist5)
+break_down_list(testlist5)
+#csv_to_cluster()
 
 
 print (prettify(clusters))
