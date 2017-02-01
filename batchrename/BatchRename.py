@@ -1,10 +1,8 @@
 import os, sys, re
 
-currentPath = os.getcwd()
-
-def find_file_by_string(searchString):
+def find_file_by_string(searchString, path):
 	found_files = []
-	for root, dirs, filenames in os.walk(currentPath):
+	for root, dirs, filenames in os.walk(path):
 		for filename in filenames:
 			if searchString in filename:
 				found_files.append(filename)
@@ -16,20 +14,17 @@ def rename_file(file, renameString):
 	print (fileExt)
 	os.rename(file, (renameString + fileExt[0]))
 
-def batch_rename(renameList):
+def batch_rename(renameList, path):
 	for renameTask in renameList:
-		found_files = find_file_by_string(renameTask[0])
-		print (found_files)
+		found_files = find_file_by_string(renameTask[0], path)
+		#print (found_files)
 		for file in found_files:
 			rename_file(file, renameTask[1])
 
-taskList = [
-["4245", "4245_WRL_MN_T5_KPR_OUT"]
+currentPath = os.getcwd() 
+
+taskList = [ #taskList[0] is what you want to look in the filenames for and taskList[1] is what the filename will become.
+["0215", "0215_WRL_SW_T5_KPR_OUT_HIG"],
 ]
 
-bath_rename(taskList)
-
-
-#found_files = find_file_by_string("4245")
-#print (found_files)
-#rename_file(found_files[0], "test")
+batch_rename(taskList, currentPath)
