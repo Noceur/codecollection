@@ -47,8 +47,8 @@ def loop_files():
 				if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
 					counter += 1
 					stripped = re.findall("(?:.*?_){2}(.*)", file) #Matches everything after the second underscore
-					print ((re.search("(?<=_)(.*?)(?=_)", file)).group(0))
-					print ((re.search("[^_]*", file)).group(0))
+					print ((re.search("(?<=_)(.*?)(?=_)", file)).group(0)) #Matches everything between first and second _.
+					print ((re.search("[^_]*", file)).group(0)) #Matches until first _
 					tilejob = tile(stripped)
 					print (file)
 					#print (subdir)
