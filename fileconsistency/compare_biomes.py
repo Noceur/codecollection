@@ -39,7 +39,7 @@ def loop_files():
 	for subdir, dirs, files in os.walk(currentDir):
 		#for file in files:
 		#	print (os.path.join(subdir, file))
-		#if counter < 1000:
+		if counter < 10000:
 			for file in files:
 				fileBiome = ((re.search("[^_]*", file)))
 				fileLevel = ((re.search("(?<=_)(.*?)(?=_)", file)))
@@ -48,14 +48,20 @@ def loop_files():
 						if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
 							counter += 1
 							stripped = re.findall("(?:.*?_){2}(.*)", file) #Matches everything after the second underscore
-							if fileBiome:
-								print (fileBiome.group(0))
-							if fileLevel:
-								print (fileLevel.group(0))
+							#stripped = stripped[0]
+							#if fileBiome:
+							#	print (fileBiome.group(0))
+							#if fileLevel:
+							#	print (fileLevel.group(0))
 							#print ((re.search("(?<=_)(.*?)(?=_)", file)).group(0))
-							tilejob = tile(stripped)
+							#tilejob = tile(stripped)
 							#print (file)
-							print (stripped[0])
+							#print (stripped[0])
+							#print (search_list(stripped))
+							search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0))
+							#print (counter)
+							
+
 							#print (subdir)
 							#print (stripped)
 			#for directory in dirs:
@@ -63,12 +69,21 @@ def loop_files():
 
 	print (counter)
 
-def search_list(item):
-	for prefab in prefab_list:
-		if item == prefab:
-			return True
-	else:
-		return False
+def search_list(item, location, biome, style):
+	for entry in prefabList:
+		print (entry['prefab'])
+		print (item)
+		#print ("\n")
+		if item == entry['prefab']:
+			#print ("found")
+			add_biome_style(item, location, biome, style)
+			return
+		else:
+			#print ("not found")
+			add_list(item, location, biome, style)
+			return
+	add_list(item, location, biome, style)
+	#return False
 
 def add_list(item, location, biome, style):
 	'''item_dict = {
@@ -86,22 +101,43 @@ def add_list(item, location, biome, style):
 		swStyle =		""
 	}'''
 
-	item_dict = {'prefab': item}
+	#print (item)
 
-def add_biome_style():
-	pass
+	item_dict = {'prefab': "", 'location': [], 'biome': [], 'style': []}
+	item_dict['prefab'] = item
+	#item_dict['prefab'].append(item)
+	item_dict['location'].append(location)
+	item_dict['biome'].append(biome)
+	item_dict['style'].append(style)
 
-def test2():
-	for subdir, dirs, files in os.walk(currentDir):
-			for file in files:
-				if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
+	#print (item_dict['prefab'])
 
-					stripped = re.findall("(?:.*?_){2}(.*)", file) 
-					print (file)
-					print (subdir)
+	prefabList.append(item_dict)
 
-	print (counter)
-	
+def add_biome_style(item, location, biome, style):
+	for eachEntry in prefabList:
+		#print (eachEntry['prefab'])
+		#print (item)
+		#print ("\n")
+		if item == eachEntry['prefab']:
+			eachEntry['location'].append(location) 
+			eachEntry['biome'].append(biome) 
+			eachEntry['style'].append(style) 
 
+def print_data():
+	for each in prefabList:
+		for entry in each['prefab']:
+			print (entry)
+		for entry in each['location']:
+			print (entry)
+		for entry in each['biome']:
+			print (entry)
+		for entry in each['style']:
+			print (entry)
 
+		print ("\n")
+
+prefabList = []
 loop_files()
+print ("\n\n\n\n")
+#print_data()
