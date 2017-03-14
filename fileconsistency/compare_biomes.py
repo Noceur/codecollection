@@ -1,4 +1,4 @@
-import glob, os, re
+import glob, os, re, csv, sys
 
 print (os.getcwd())
 currentDir = os.getcwd()
@@ -39,7 +39,7 @@ def loop_files():
 	for subdir, dirs, files in os.walk(currentDir):
 		#for file in files:
 		#	print (os.path.join(subdir, file))
-		if counter < 10000:
+		#if counter < 4000:
 			for file in files:
 				fileBiome = ((re.search("[^_]*", file)))
 				fileLevel = ((re.search("(?<=_)(.*?)(?=_)", file)))
@@ -70,59 +70,72 @@ def loop_files():
 	print (counter)
 
 def search_list(item, location, biome, style):
+	#found = False
 	for entry in prefabList:
-		print (entry['prefab'])
-		print (item)
+		#print (entry['prefab'])
+		#print (item)
 		#print ("\n")
 		if item == entry['prefab']:
-			#print ("found")
+			#print (entry['prefab'])
+			#print (item)
 			add_biome_style(item, location, biome, style)
 			return
-		else:
-			#print ("not found")
-			add_list(item, location, biome, style)
-			return
 	add_list(item, location, biome, style)
+	return
 	#return False
 
 def add_list(item, location, biome, style):
-	'''item_dict = {
-		prefab =		item,
-		fileLoc = 		location,
-		fr =			False,
-		mn =			False,
-		hl =			False,
-		st =			False,
-		sw = 			False,
-		frStyle =		"",
-		mnStyle =		"",
-		hlStyle =		"",
-		stStyle =		"",
-		swStyle =		""
-	}'''
+	item_dict = {'prefab': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': []}
+	#item_dict = {'prefab': "", 'location': [], 'biome': [], 'style': []}
 
-	#print (item)
-
-	item_dict = {'prefab': "", 'location': [], 'biome': [], 'style': []}
 	item_dict['prefab'] = item
-	#item_dict['prefab'].append(item)
 	item_dict['location'].append(location)
-	item_dict['biome'].append(biome)
-	item_dict['style'].append(style)
 
-	#print (item_dict['prefab'])
+	item_dict[return_biome_abr(biome)] = True
+
+	item_dict[(return_biome_abr(biome)+'Style')].append(style)
+
+
+
+
 
 	prefabList.append(item_dict)
 
+def return_biome_abr(biome):
+	if biome.upper() == "SWAMP":
+		return "SW"
+	if biome.upper() == "STEPPE":
+		return "ST"
+	if biome.upper() == "MOUNTAIN":
+		return "MN"
+	if biome.upper() == "HIGHLAND":
+		return "HL"
+	if biome.upper() == "FOREST":
+		return "FR"
+	else:
+		input('Press enter to continue: ')
+
 def add_biome_style(item, location, biome, style):
+	if style.upper() == "GREEN":
+		style = "G"
+	elif style.upper() == "RED":
+		style = "R"
+	elif style.upper() == "DEAD":
+		style = "D"
+	else:
+		style = "No style?"
+
 	for eachEntry in prefabList:
 		#print (eachEntry['prefab'])
 		#print (item)
 		#print ("\n")
 		if item == eachEntry['prefab']:
 			eachEntry['location'].append(location) 
-			eachEntry['biome'].append(biome) 
-			eachEntry['style'].append(style) 
+			eachEntry[return_biome_abr(biome)] = True
+			eachEntry[(return_biome_abr(biome)+'Style')].append(style)
+
+			#eachEntry['biome'].append(biome) 
+			#eachEntry['style'].append(style) 
 
 def print_data():
 	for each in prefabList:
@@ -137,7 +150,123 @@ def print_data():
 
 		print ("\n")
 
+def print_data2():
+	printStyle = "";
+	appendLine = ""
+	for each in prefabList:
+		for entry in each['prefab']:
+			appendLine += entry
+			print (entry)
+
+		if not each['SW'] == False:
+			print ("SW: ", each['SW'])
+			appendLine += ", SWAMP"
+		else:
+			appendLine += ","
+		#print (each['SWStyle'])
+		for style in each['SWStyle']:
+			printStyle += (style + " ")
+		if not printStyle == "":
+			print (printStyle[:-1])
+			appendLine += ", "
+			appendLine += printStyle
+		else:
+			appendLine += (",")
+		printStyle = ""
+
+
+		if not each['ST'] == False:
+			print ("ST: ", each['ST'])
+			appendLine += ", STEPPE"
+		else:
+			appendLine += ","
+		#print (each['STStyle'])
+		for style in each['STStyle']:
+			printStyle += (style + " ")
+		if not printStyle == "":
+			print (printStyle[:-1])
+			appendLine += ", "
+			appendLine += printStyle
+		else:
+			appendLine += (",")
+		printStyle = ""
+
+
+		if not each['MN'] == False:
+			print ("MN: ", each['MN'])
+			appendLine += ", MOUNTAIN"
+		else:
+			appendLine += ","
+		#print (each['MNStyle'])
+		for style in each['MNStyle']:
+			printStyle += (style + " ")
+		if not printStyle == "":
+			print (printStyle[:-1])
+			appendLine += ", "
+			appendLine += printStyle
+		else:
+			appendLine += (",")
+		printStyle = ""
+
+
+		if not each['HL'] == False:
+			print ("HL: ", each['HL'])
+			appendLine += ", HIGHLAND"
+		else:
+			appendLine += ","
+		#print (each['HLStyle'])
+		for style in each['HLStyle']:
+			printStyle += (style + " ")
+		if not printStyle == "":
+			print (printStyle[:-1])
+			appendLine += ", "
+			appendLine += printStyle
+		else:
+			appendLine += (",")
+		printStyle = ""
+
+
+		if not each['FR'] == False:
+			print ("FR: ", each['FR'])
+			appendLine += ", FOREST"
+		else:
+			appendLine += ","
+		#print (each['FRStyle'])
+		for style in each['FRStyle']:
+			printStyle += (style + " ")
+		if not printStyle == "":
+			print (printStyle[:-1])
+			appendLine += ", "
+			appendLine += printStyle
+		else:
+			appendLine += (",")
+		printStyle = ""
+
+
+		for entry in each['location']:
+			print (entry)
+
+
+
+		print ("\n")
+
+		writeList.append(appendLine)
+		appendLine = ""
+
+writeList = []
 prefabList = []
 loop_files()
 print ("\n\n\n\n")
 #print_data()
+print_data2()
+
+
+
+d = open()
+f = open("output.csv", "wt", newline='', quoting=csv.QUOTE_NONE)
+try:
+	writer = csv.writer(f)
+	for entry in writeList:
+		writer.writerow([entry])
+finally: 
+	f.close()
