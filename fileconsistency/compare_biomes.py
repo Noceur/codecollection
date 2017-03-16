@@ -134,6 +134,28 @@ def add_biome_style(item, location, biome, style):
 			eachEntry[biome_abr(biome)] = True
 			eachEntry[(biome_abr(biome)+'Style')].append(style)
 
+def data_formater(entry, biome, printStyle, appendLine, silent=True):
+	biomeAbr = biome_abr(biome)
+
+	if not entry[biomeAbr] == False:
+		if not silent:
+			print (biomeAbr + ": ", entry[biomeAbr])
+		appendLine += (", " + biome)
+	else:
+		appendLine += ","
+	for style in entry[(biomeAbr + "Style")]:
+		printStyle += (style + " ")
+	if not printStyle == "":
+		if not silent:
+			print (printStyle[:-1])
+		appendLine += ", "
+		appendLine += printStyle
+	else:
+		appendLine += (",")
+	printStyle = ""
+
+	return appendLine, printStyle
+
 def print_data2():
 	printStyle = "";
 	appendLine = ""
@@ -142,96 +164,14 @@ def print_data2():
 			appendLine += entry
 			print (entry)
 
-		if not each['SW'] == False:
-			print ("SW: ", each['SW'])
-			appendLine += ", SWAMP"
-		else:
-			appendLine += ","
-		#print (each['SWStyle'])
-		for style in each['SWStyle']:
-			printStyle += (style + " ")
-		if not printStyle == "":
-			print (printStyle[:-1])
-			appendLine += ", "
-			appendLine += printStyle
-		else:
-			appendLine += (",")
-		printStyle = ""
-
-
-		if not each['ST'] == False:
-			print ("ST: ", each['ST'])
-			appendLine += ", STEPPE"
-		else:
-			appendLine += ","
-		#print (each['STStyle'])
-		for style in each['STStyle']:
-			printStyle += (style + " ")
-		if not printStyle == "":
-			print (printStyle[:-1])
-			appendLine += ", "
-			appendLine += printStyle
-		else:
-			appendLine += (",")
-		printStyle = ""
-
-
-		if not each['MN'] == False:
-			print ("MN: ", each['MN'])
-			appendLine += ", MOUNTAIN"
-		else:
-			appendLine += ","
-		#print (each['MNStyle'])
-		for style in each['MNStyle']:
-			printStyle += (style + " ")
-		if not printStyle == "":
-			print (printStyle[:-1])
-			appendLine += ", "
-			appendLine += printStyle
-		else:
-			appendLine += (",")
-		printStyle = ""
-
-
-		if not each['HL'] == False:
-			print ("HL: ", each['HL'])
-			appendLine += ", HIGHLAND"
-		else:
-			appendLine += ","
-		#print (each['HLStyle'])
-		for style in each['HLStyle']:
-			printStyle += (style + " ")
-		if not printStyle == "":
-			print (printStyle[:-1])
-			appendLine += ", "
-			appendLine += printStyle
-		else:
-			appendLine += (",")
-		printStyle = ""
-
-
-		if not each['FR'] == False:
-			print ("FR: ", each['FR'])
-			appendLine += ", FOREST"
-		else:
-			appendLine += ","
-		#print (each['FRStyle'])
-		for style in each['FRStyle']:
-			printStyle += (style + " ")
-		if not printStyle == "":
-			print (printStyle[:-1])
-			appendLine += ", "
-			appendLine += printStyle
-		else:
-			appendLine += (",")
-		printStyle = ""
-
-
-
+		appendLine, printStyle = data_formater(each, "SWAMP", printStyle, appendLine, False)
+		appendLine, printStyle = data_formater(each, "STEPPE", printStyle, appendLine, False)
+		appendLine, printStyle = data_formater(each, "MOUNTAIN", printStyle, appendLine, False)
+		appendLine, printStyle = data_formater(each, "HIGHLAND", printStyle, appendLine, False)
+		appendLine, printStyle = data_formater(each, "FOREST", printStyle, appendLine, False)
 
 		for entry in each['location']:
 			print (entry)
-
 
 		print ("\n")
 
@@ -244,24 +184,6 @@ loop_files()
 print ("\n\n\n\n")
 #print_data()
 print_data2()
-
-
-def data_formater():
-	if not each['FR'] == False:
-		print ("FR: ", each['FR'])
-		appendLine += ", FOREST"
-	else:
-		appendLine += ","
-	#print (each['FRStyle'])
-	for style in each['FRStyle']:
-		printStyle += (style + " ")
-	if not printStyle == "":
-		print (printStyle[:-1])
-		appendLine += ", "
-		appendLine += printStyle
-	else:
-		appendLine += (",")
-	printStyle = ""
 
 
 
