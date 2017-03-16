@@ -86,22 +86,28 @@ def search_list(item, location, biome, style):
 
 def add_list(item, location, biome, style):
 	item_dict = {'prefab': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': []}
-	#item_dict = {'prefab': "", 'location': [], 'biome': [], 'style': []}
+
+	style = style_abr(style)
 
 	item_dict['prefab'] = item
 	item_dict['location'].append(location)
-
-	item_dict[return_biome_abr(biome)] = True
-
-	item_dict[(return_biome_abr(biome)+'Style')].append(style)
-
-
-
-
+	item_dict[biome_abr(biome)] = True
+	item_dict[(biome_abr(biome)+'Style')].append(style)
 
 	prefabList.append(item_dict)
 
-def return_biome_abr(biome):
+def style_abr(style):
+	if style.upper() == "GREEN":
+		style = "G"
+	elif style.upper() == "RED":
+		style = "R"
+	elif style.upper() == "DEAD":
+		style = "D"
+	else:
+		style = "No style?"
+	return style
+
+def biome_abr(biome):
 	if biome.upper() == "SWAMP":
 		return "SW"
 	if biome.upper() == "STEPPE":
@@ -113,17 +119,11 @@ def return_biome_abr(biome):
 	if biome.upper() == "FOREST":
 		return "FR"
 	else:
+		print ("Couldn't find biome abr.")
 		input('Press enter to continue: ')
 
 def add_biome_style(item, location, biome, style):
-	if style.upper() == "GREEN":
-		style = "G"
-	elif style.upper() == "RED":
-		style = "R"
-	elif style.upper() == "DEAD":
-		style = "D"
-	else:
-		style = "No style?"
+	style = style_abr(style)
 
 	for eachEntry in prefabList:
 		#print (eachEntry['prefab'])
@@ -131,24 +131,8 @@ def add_biome_style(item, location, biome, style):
 		#print ("\n")
 		if item == eachEntry['prefab']:
 			eachEntry['location'].append(location) 
-			eachEntry[return_biome_abr(biome)] = True
-			eachEntry[(return_biome_abr(biome)+'Style')].append(style)
-
-			#eachEntry['biome'].append(biome) 
-			#eachEntry['style'].append(style) 
-
-def print_data():
-	for each in prefabList:
-		for entry in each['prefab']:
-			print (entry)
-		for entry in each['location']:
-			print (entry)
-		for entry in each['biome']:
-			print (entry)
-		for entry in each['style']:
-			print (entry)
-
-		print ("\n")
+			eachEntry[biome_abr(biome)] = True
+			eachEntry[(biome_abr(biome)+'Style')].append(style)
 
 def print_data2():
 	printStyle = "";
@@ -243,9 +227,10 @@ def print_data2():
 		printStyle = ""
 
 
+
+
 		for entry in each['location']:
 			print (entry)
-
 
 
 		print ("\n")
@@ -261,9 +246,26 @@ print ("\n\n\n\n")
 print_data2()
 
 
+def data_formater():
+	if not each['FR'] == False:
+		print ("FR: ", each['FR'])
+		appendLine += ", FOREST"
+	else:
+		appendLine += ","
+	#print (each['FRStyle'])
+	for style in each['FRStyle']:
+		printStyle += (style + " ")
+	if not printStyle == "":
+		print (printStyle[:-1])
+		appendLine += ", "
+		appendLine += printStyle
+	else:
+		appendLine += (",")
+	printStyle = ""
 
-d = open()
-f = open("output.csv", "wt", newline='', quoting=csv.QUOTE_NONE)
+
+
+f = open("output.csv", "wt", newline='')
 try:
 	writer = csv.writer(f)
 	for entry in writeList:
