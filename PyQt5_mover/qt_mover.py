@@ -141,7 +141,6 @@ class RenamerWindow(QWidget):
                 self.files.append(file)
                 #print (file)
 
-
     def select_target(self):
         #directory = QFileDialog.getExistingDirectory(self)
         #if directory:
@@ -151,8 +150,6 @@ class RenamerWindow(QWidget):
 
 
             # Clear out old data
-        self.list_files.clear()
-        self.files = []
         self.target = ""
         self.target_lbl.setText("TARGET: \n")
 
@@ -160,6 +157,10 @@ class RenamerWindow(QWidget):
         if directory:
             self.target = (directory + "/")
             self.target_lbl.setText(("TARGET: \n"+ directory))
+
+    def update_file_list():
+        # call after 
+        pass
 
     def run_job(self):
         #print (self.list_files.currentRow())
@@ -177,10 +178,12 @@ class RenamerWindow(QWidget):
 
         else:
             print ("RUN JOB")
-            move_file("test.txt")
+            #move_file("test.txt")
             self.image_lbl.setPixmap(self.good_pix)
             for each in self.list_files.selectedItems():
                 print (each.text())
+                if each:
+                    move_file(each.text())
 
     def check_consistency(self):
         print ("CHECK CONSISTENCY")
