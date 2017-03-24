@@ -142,8 +142,11 @@ class RenamerWindow(QWidget):
 
             # This would add all the files and directories to the list
             for file in dirs:
-                self.list_files.addItem(file)
-                self.files.append(file)
+                isFile, isDir = check_if_file((self.source + file))
+                if not isDir:
+                    self.list_files.addItem(file)
+                    self.files.append(file)
+            self.add_log("Source set.")
                 # print (file)
 
     def select_target(self):
@@ -154,41 +157,37 @@ class RenamerWindow(QWidget):
         if directory:
             self.target = (directory + "/")
             self.target_lbl.setText(("TARGET: \n" + directory))
+        self.add_log("Target set.")
 
     def update_file_list(self):
         self.list_files.clear()
         dirs = os.listdir(self.source[:-1])
         for file in dirs:
-            self.list_files.addItem(file)
-            self.files.append(file)
+            isFile, isDir = check_if_file((self.source + file))
+            if not isDir:
+                self.list_files.addItem(file)
+                self.files.append(file)
 
     def run_jobs(self):
-        # print (self.list_files.currentRow())
-        # items = []
-        # for index in range(self.list_files.count()):
-        #     items.append(self.list_files.item(index))
-
-        # for each in items:
-        #    print (each)
-
-        # print (self.list_files.selectedItems()[0])
+        job_list = []
         if self.check:
             if self.source == "" or self.target == "":
                 print("SAD")
                 self.image_lbl.setPixmap(self.bad_pix)
 
             else:
-                print("RUN JOB")
-                # move_file("test.txt")
+                #print("RUN JOB")
                 self.image_lbl.setPixmap(self.good_pix)
                 for each in self.list_files.selectedItems():
                     print(each.text())
                     if each:
-                        # for locations                                                                            ''' SUBSTRING + LOCATIONS '''
-                        # move_file(self.source, self.target, each.text())
-                        run_job(each.text())
+                        file_jobs = prepare_job(each.text())
+                    for entry in file_jobs:
+                        job_list.append(entry)
+                execute_job(job_list)
             self.check = False
             self.update_file_list()
+            self.image_lbl.setPixmap(self.neutral_pix)
         else:
             self.add_log("Check consistency before running job.")
 
@@ -196,6 +195,7 @@ class RenamerWindow(QWidget):
         # Locks selection and require new check if selection changes, only way to make sure files exists when moving.
         print("CHECK CONSISTENCY")
         if self.source and self.target:
+            self.add_log("Source and target set.")
             # self.sourceSubStr = self.source.replace()
             self.image_lbl.setPixmap(self.good_pix)
             self.check = True
@@ -221,47 +221,50 @@ class RenamerWindow(QWidget):
     def clear_text(self):
         print ("log clreared")
         self.log.clear()
-        
+
 
 def check_if_file(path):
-    isPath = (os.path.isfile(path))
+    isFile = (os.path.isfile(path))
     isDir = (os.path.isdir(path))
-    return (isPath, isDir)
+    return (isFile, isDir)
 
 
-def run_job(file):
+def prepare_job(file):
     job_list = []
     for entry in locations:
+        fileStr = (file + ".")[:-1]
 
-
-
+        # Dices up the path and puts a placeholder in place
         sub_source, sub_target = cut_location(entry)
-        sub_source = placeholder_biome_level(sub_source)
-        sub_target = placeholder_biome_level(sub_target)
+        source_output = placeholder_biome_level(sub_source)
+        target_output = placeholder_biome_level(sub_target)
 
-        # for entry in locations:
-        source_output = REplace_string("tempBIOME", sub_source, get_biome(entry)[0])
-        target_output = REplace_string("tempBIOME", sub_target, get_biome(entry)[0])
+        # Replaces the placeholder biome and level tag in the string with the real biome depending on the entry in locations. 
+        source_output = REplace_string("tempBIOME", source_output, get_biome(entry)[0])
+        target_output = REplace_string("tempBIOME", target_output, get_biome(entry)[0])
         source_output = REplace_string("tempLEVEL", source_output, get_level(entry)[0])
         target_output = REplace_string("tempLEVEL", target_output, get_level(entry)[0])
 
-        #output = mover.source.replace(locations[0], "")
-        #output = placeholder_biome_level(output)
-        #output = REplace_string("tempBIOME", output, get_biome(location)[0])
-        #output = REplace_string("tempLEVEL", output, get_level(location)[0])
+        # Change filename to correct biome and level.
+        fileStr = placeholder_biome_level(fileStr)
+        fileStr = REplace_string("tempBIOME", fileStr, get_biome(entry)[0])
+        fileStr = REplace_string("tempLEVEL", fileStr, get_level(entry)[0])
 
-
-        job_list.append(((entry + source_output), (entry + target_output), file))
-
-        #print(entry + source_output, entry + target_output)
+        # Adds the data to the list of jobs to perform.
+        job_list.append(((entry + source_output), (entry + target_output), fileStr))
 
         # Check if consistency check is OK
 
+
     for entry in job_list:
-        if not check_if_available(entry[2]):
+        if not check_if_available((entry[0]+entry[2])):
             mover.add_log(('could not find "' + entry[2] + '" in folder, aborting job.'))
             return
 
+    return job_list
+
+
+def execute_job(job_list):
     for entry in job_list:
         move_file(entry[0], entry[1], entry[2])
 
@@ -277,7 +280,7 @@ def check_if_available(file):
         except OSError as e:
             print ('Access-error on file "' + f + '"! \n' + str(e))
             return False
-    print ("path to file" + f + "does not exist... ?")
+    print ('path to file "' + f + '" does not exist... ?')
     pass
 
 
@@ -376,9 +379,6 @@ locations = [
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     mover = RenamerWindow()
-
-    mover.source = "E:/MoverProject/MAOGA/SET_FOREST_GREEN/landscape/FOREST_GREEN_SOURCE"
-    mover.target = "E:/MoverProject/MAOGA/SET_FOREST_GREEN/landscape/FOREST_GREEN_TARGET"
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(dir_path)
