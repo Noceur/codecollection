@@ -42,10 +42,13 @@ class RenamerWindow(QWidget):
         self.hspacer2 = QSpacerItem(50, 10, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.hspacer = QSpacerItem(100, 10, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.neutral_pix = QPixmap(os.getcwd() + '/trump_neutral.png')
-        self.good_pix = QPixmap(os.getcwd() + '/trump_good.png')
-        self.bad_pix = QPixmap(os.getcwd() + '/trump_bad.png')
+        self.neutral_pix = QPixmap(os.getcwd() + '/neutral.png')
+        self.good_pix = QPixmap(os.getcwd() + '/good.png')
+        self.bad_pix = QPixmap(os.getcwd() + '/error.png')
         self.image_lbl.setPixmap(self.neutral_pix)
+
+        self.log_file = self.open_file("log.txt")
+        self.log_timestamp = 0
 
         # Other variables
         self.source = ""
@@ -120,10 +123,18 @@ class RenamerWindow(QWidget):
 
         main_v_layout.addLayout(h_layout)
         self.setLayout(main_v_layout)
-        self.setWindowTitle('Make asset order great again')
-        self.setWindowIcon(QIcon('python-xxl.png'))
+        self.setWindowTitle('Asset order tool')
+        self.setWindowIcon(QIcon('PyIcon.png'))
 
         self.show()
+
+    def open_file(self, filename):
+        t = time.strftime('%H:%M:%S - %d %b')
+        #with open(filename, "w") as open_file:
+        open_file = open(filename, "w", 1)
+        open_file.write("Log created at: " + t + "\n")
+        print (t)
+        return open_file            
 
     def select_source(self):
         # Clear out old data
@@ -147,6 +158,7 @@ class RenamerWindow(QWidget):
                     self.list_files.addItem(file)
                     self.files.append(file)
             self.add_log("Source set.")
+            print (self.source)
                 # print (file)
 
     def select_target(self):
@@ -158,6 +170,7 @@ class RenamerWindow(QWidget):
             self.target = (directory + "/")
             self.target_lbl.setText(("TARGET: \n" + directory))
         self.add_log("Target set.")
+        print (self.target)
 
     def update_file_list(self):
         self.list_files.clear()
@@ -203,23 +216,31 @@ class RenamerWindow(QWidget):
             self.image_lbl.setPixmap(self.bad_pix)
         # pass
         print(self.source, self.target)
-        test = locations[0].replace(self.source, "x")
-        print(test)
 
     def add_log(self, message):
         t = time.strftime('%H:%M:%S')
         old_log = self.log.toPlainText()
-        if old_log == "":
-            # print (t)
-            # self.log.setText(str(time.strftime('%H:%M:%S')))
-            self.log.setText("- " + str(time.strftime("%H:%M:%S -\n")) + message)
+        if (self.log_timestamp+3)<time.time():
+            if old_log == "":
+                self.log.setText("- " + str(time.strftime("%H:%M:%S -\n")) + message)
+            else:
+                #new_log = ("- " + str(time.strftime('%H:%M:%S -\n')) + message + "\n\n" + self.log.toPlainText())
+                new_log = (self.log.toPlainText() + "\n\n" + "- " + str(time.strftime('%H:%M:%S -\n')) + message)
+                self.log.setText(new_log)
+            self.log_file.write("- " + str(time.strftime("%H:%M:%S -\n")) + message + "\n")
+            self.log_timestamp = time.time()
         else:
-            # new_log = (self.log.toPlainText() + "\n" + message)
-            new_log = ("- " + str(time.strftime('%H:%M:%S -\n')) + message + "\n\n" + self.log.toPlainText())
-            self.log.setText(new_log)
+            if old_log == "":
+                self.log.setText(message)
+            else:
+                #new_log = (message + "\n" + self.log.toPlainText())
+                new_log = (self.log.toPlainText() + "\n" + message)
+                self.log.setText(new_log)
+            self.log_file.write(message + "\n")
+            self.log_timestamp = time.time()
 
     def clear_text(self):
-        print ("log clreared")
+        print ("log cleared")
         self.log.clear()
 
 
@@ -251,7 +272,9 @@ def prepare_job(file):
         fileStr = REplace_string("tempLEVEL", fileStr, get_level(entry)[0])
 
         # Adds the data to the list of jobs to perform.
-        job_list.append(((entry + source_output), (entry + target_output), fileStr))
+        if check_if_available((entry + source_output + fileStr)):
+            print ((entry + source_output + fileStr))
+            job_list.append(((entry + source_output), (entry + target_output), fileStr))
 
         # Check if consistency check is OK
 
@@ -276,9 +299,11 @@ def check_if_available(file):
         try:
             os.rename(f, f)
             print ('Access on file "' + f +'" is available!')
+            mover.add_log(('Access on file "' + f +'" is available.'))
             return True
         except OSError as e:
             print ('Access-error on file "' + f + '"! \n' + str(e))
+            mover.add_log(('Access-error on file "' + f + '"! \n' + str(e)))
             return False
     print ('path to file "' + f + '" does not exist... ?')
     pass
@@ -324,8 +349,8 @@ def get_level(string):
     elif "_red" in string.lower():
         return ("RED", True)
 
-    elif "_black" in string.lower():
-        return ("GREEN", True)
+    elif "_dead" in string.lower():
+        return ("DEAD", True)
 
     else:
         return ("", False)
@@ -336,8 +361,8 @@ def placeholder_biome_level(string):
     biomes = ["forest", "highland", "mountain", "swamp", "steppe"]
     for entry in biomes:
         string = REplace_string(entry, string, "tempBIOME")
-        if exit:
-            break
+        #if exit:
+        #    break
 
     levels = ["red", "dead", "green"]
     for entry in levels:
@@ -352,8 +377,10 @@ def REplace_string(phrase, string, replaceWith):
 
 
 def change_biome(location, sourceOrTarget):
+    x = placeholder_biome_level(sourceOrTarget)
+    y = placeholder_biome_level(locations[0])
     # Add input with biome in string and get output with other biome in same place. Use replace.
-    output = sourceOrTarget.replace(locations[0], "")
+    output = x.replace(y, "")
     output = placeholder_biome_level(output)
     output = REplace_string("tempBIOME", output, get_biome(location)[0])
     output = REplace_string("tempLEVEL", output, get_level(location)[0])
@@ -364,21 +391,52 @@ def cut_location(location):
 
     source_output = change_biome(location, mover.source)
     target_output = change_biome(location, mover.target)
-
-    #print(source_output)
-    #print(target_output)
-
     return (source_output, target_output)
 
+    
 
-locations = [
-    "E:/MoverProject/MAOGA/SET_FOREST_GREEN",
-    "E:/MoverProject/MAOGA/SET_HIGHLAND_GREEN"
-]
+
+def get_locations(silent = True):
+    pathFR = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\FOREST")
+    pathHL = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\HIGHLAND")
+    pathMN = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\MOUNTAIN")
+    pathST = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\STEPPE")
+    pathSW = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\SWAMP")
+
+    get_biome_subfolders(pathFR)
+    get_biome_subfolders(pathHL)
+    get_biome_subfolders(pathMN)
+    get_biome_subfolders(pathST)
+    get_biome_subfolders(pathSW)
+
+    if not silent:
+        mover.add_log("Folders found:")
+    for entry in locations:
+        mover.add_log(entry)
+        if not silent:
+            print (entry)
+
+
+def get_biome_subfolders(path):
+    for file in os.listdir(path):
+        if os.path.isdir((path + "\\" + file)) and ("GREEN" in file or "RED" in file or "DEAD" in file):
+            accepted = (path+"\\"+file).replace("\\", "/")
+            locations.append(accepted)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     mover = RenamerWindow()
+
+    locations = []
+    get_locations(False)
+    mover.source = "C:/AlbionOnlineSource/client/unity/Assets/Resources/Prefabs/ENV_PREFABS/BIOMES/MOUNTAIN/SET_MOUNTAIN_RED/"
+    mover.target = "C:/AlbionOnlineSource/client/unity/Assets/Resources/Prefabs/ENV_PREFABS/BIOMES/MOUNTAIN/SET_MOUNTAIN_RED/"
+    mover.update_file_list()
+
+    biomesFolder = (os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\"))
+    biomesFolder = biomesFolder.replace("\\", "/") 
+    print (biomesFolder)
+
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(dir_path)
