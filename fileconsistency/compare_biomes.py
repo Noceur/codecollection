@@ -3,39 +3,10 @@ import glob, os, re, csv, sys
 print (os.getcwd())
 currentDir = os.getcwd()
 
-class tile():
-
-	def __init__(self, name):
-		self.filename =		name
-		self.fileLoc =		""
-		self.fr =			False
-		self.mn =			False
-		self.hl =			False
-		self.st =			False
-		self.sw = 			False
-		self.frStyle =		""
-		self.mnStyle =		""
-		self.hlStyle =		""
-		self.stStyle =		""
-		self.swStyle =		""
-
-	def check_consistency(self):
-		fileLoc = str(os.getcwd() + "test")
-
-	def remove_biome(self):
-		print ("test")
-
-def get_files():
-	for file in glob.glob("*.*"):
-		if "_OUT" in file and not "PSG" in file:
-			if not ".meta" in file: 
-			#file = file[:-34]
-				print (file)
-
 def loop_files():
 	counter = 0
 	exceptions = []
-
+	#currentDir = ""
 	for subdir, dirs, files in os.walk(currentDir):
 		#for file in files:
 		#	print (os.path.join(subdir, file))
@@ -46,6 +17,7 @@ def loop_files():
 				if  fileBiome.group(0).upper() == "FOREST" or fileBiome.group(0).upper() == "STEPPE" or fileBiome.group(0).upper() == "MOUNTAIN" or fileBiome.group(0).upper() == "HIGHLAND" or fileBiome.group(0).upper() == "SWAMP":
 					if  fileLevel.group(0).upper() == "GREEN" or fileLevel.group(0).upper() == "RED" or fileLevel.group(0).upper() == "DEAD":
 						if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
+							dirCurrent = subdir.split(os.path.sep)[-1] #Get current directory
 							counter += 1
 							stripped = re.findall("(?:.*?_){2}(.*)", file) #Matches everything after the second underscore
 							#stripped = stripped[0]
@@ -58,7 +30,7 @@ def loop_files():
 							#print (file)
 							#print (stripped[0])
 							#print (search_list(stripped))
-							search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0))
+							search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0), dirCurrent)
 							#print (counter)
 							
 
@@ -69,7 +41,7 @@ def loop_files():
 
 	print (counter)
 
-def search_list(item, location, biome, style):
+def search_list(item, location, biome, style, dirCurrent):
 	#found = False
 	for entry in prefabList:
 		#print (entry['prefab'])
@@ -78,19 +50,36 @@ def search_list(item, location, biome, style):
 		if item == entry['prefab']:
 			#print (entry['prefab'])
 			#print (item)
-			add_biome_style(item, location, biome, style)
+			add_biome_style(item, location, biome, style, dirCurrent)
 			return
-	add_list(item, location, biome, style)
+	add_list(item, location, biome, style, dirCurrent)
 	return
 	#return False
 
-def add_list(item, location, biome, style):
-	item_dict = {'prefab': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': []}
+def add_list(item, location, biome, style, dirCurrent):
+	item_dict = {'prefab': "", 'dirCurrent': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': []}
 
 	style = style_abr(style)
 
+	# remove biome and level (red, dead, green) from dirCurrent
+	dirBiome = re.search("^.+?_", dirCurrent)
+	dirLevel = re.search("(?<=_)(.*?)(?=_)", dirCurrent)
+	if dirLevel:
+		dirLevel = dirLevel.group(0)
+		if dirLevel.lower() == "green" or dirLevel.lower() == "red" or dirLevel.lower() == "dead":
+			dirCurrent = dirCurrent.replace("GREEN", "", 1)
+			dirCurrent = dirCurrent.replace("RED", "", 1)
+			dirCurrent = dirCurrent.replace("DEAD", "", 1)
+	if dirBiome:
+		dirBiome = dirBiome.group(0)
+		if "swamp" in dirBiome.lower() or "steppe" in dirBiome.lower() or "mountain" in dirBiome.lower() or "highland" in dirBiome.lower() or "forest" in dirBiome.lower():
+			dirCurrent = re.sub("^.+?_", "", dirCurrent)
+
+
+
 	item_dict['prefab'] = item
 	item_dict['location'].append(location)
+	item_dict['dirCurrent'] = dirCurrent
 	item_dict[biome_abr(biome)] = True
 	item_dict[(biome_abr(biome)+'Style')].append(style)
 
@@ -122,17 +111,17 @@ def biome_abr(biome):
 		print ("Couldn't find biome abr.")
 		input('Press enter to continue: ')
 
-def add_biome_style(item, location, biome, style):
+def add_biome_style(item, location, biome, style, dirCurrent):
 	style = style_abr(style)
 
-	for eachEntry in prefabList:
-		#print (eachEntry['prefab'])
+	for entry in prefabList:
+		#print (entry['prefab'])
 		#print (item)
 		#print ("\n")
-		if item == eachEntry['prefab']:
-			eachEntry['location'].append(location) 
-			eachEntry[biome_abr(biome)] = True
-			eachEntry[(biome_abr(biome)+'Style')].append(style)
+		if item == entry['prefab']:
+			entry['location'].append(location) 
+			entry[biome_abr(biome)] = True
+			entry[(biome_abr(biome)+'Style')].append(style)
 
 def data_formater(entry, biome, printStyle, appendLine, silent=True):
 	biomeAbr = biome_abr(biome)
@@ -154,26 +143,29 @@ def data_formater(entry, biome, printStyle, appendLine, silent=True):
 		appendLine += (",")
 	printStyle = ""
 
-	return appendLine, printStyle
+	return appendLine
 
-def print_data2():
+def data_output(silent=True):
 	printStyle = "";
 	appendLine = ""
 	for each in prefabList:
 		for entry in each['prefab']:
 			appendLine += entry
-			print (entry)
+			if not silent:
+				print (entry)
+		appendLine += (","+each['dirCurrent'])
 
-		appendLine, printStyle = data_formater(each, "SWAMP", printStyle, appendLine, False)
-		appendLine, printStyle = data_formater(each, "STEPPE", printStyle, appendLine, False)
-		appendLine, printStyle = data_formater(each, "MOUNTAIN", printStyle, appendLine, False)
-		appendLine, printStyle = data_formater(each, "HIGHLAND", printStyle, appendLine, False)
-		appendLine, printStyle = data_formater(each, "FOREST", printStyle, appendLine, False)
+		appendLine = data_formater(each, "SWAMP", printStyle, appendLine, silent)
+		appendLine = data_formater(each, "STEPPE", printStyle, appendLine, silent)
+		appendLine = data_formater(each, "MOUNTAIN", printStyle, appendLine, silent)
+		appendLine = data_formater(each, "HIGHLAND", printStyle, appendLine, silent)
+		appendLine = data_formater(each, "FOREST", printStyle, appendLine, silent)
 
-		for entry in each['location']:
-			print (entry)
 
-		print ("\n")
+		if not silent:
+			for entry in each['location']:
+				print (entry)
+			print ("\n")
 
 		writeList.append(appendLine)
 		appendLine = ""
@@ -182,14 +174,16 @@ writeList = []
 prefabList = []
 loop_files()
 print ("\n\n\n\n")
-#print_data()
-print_data2()
+#data_output()
+data_output(True)
 
 
 
 f = open("output.csv", "wt", newline='')
 try:
-	writer = csv.writer(f)
+	#writer = csv.writer(f, quoting=csv.QUOTE_NONE, escapechar=',')
+	writer = csv.writer(f, quoting=csv.QUOTE_NONE, delimiter='|')#, quotechar='')#,escapechar='\\')
+	#writer = csv.writer(f)
 	for entry in writeList:
 		writer.writerow([entry])
 finally: 
