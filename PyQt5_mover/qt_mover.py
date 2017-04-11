@@ -299,22 +299,30 @@ def check_if_available(file):
         try:
             os.rename(f, f)
             print ('Access on file "' + f +'" is available!')
-            mover.add_log(('Access on file "' + f +'" is available.'))
+            #mover.add_log(('Access on file "' + f +'" is available.'))
             return True
         except OSError as e:
             print ('Access-error on file "' + f + '"! \n' + str(e))
             mover.add_log(('Access-error on file "' + f + '"! \n' + str(e)))
             return False
     print ('path to file "' + f + '" does not exist... ?')
+    mover.add_log(('"' + f + '" does not exist. Skipping.'))
     pass
+
+
+def mkdirnotex(filename):
+    folder=os.path.dirname(filename)
+    if not os.path.exists(folder):
+        mover.add_log(('Folder "' + folder + '" does not exist. Creating.'))
+        os.makedirs(folder)
+        if os.path.exists(folder):
+            mover.add_log(('"' + folder + '" created.'))
 
 
 def move_file(source, target, file):
-    # source = source.replace("/", "\\")
-    # target = source.replace("/", "\\")
+    mkdirnotex((target+file))
     os.rename((source + file), (target + file))
     print(file, "has been moved.")
-    pass
 
 
 def load_settings():
@@ -393,15 +401,18 @@ def cut_location(location):
     target_output = change_biome(location, mover.target)
     return (source_output, target_output)
 
-    
-
 
 def get_locations(silent = True):
-    pathFR = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\FOREST")
-    pathHL = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\HIGHLAND")
-    pathMN = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\MOUNTAIN")
-    pathST = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\STEPPE")
-    pathSW = os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\SWAMP")
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+
+    pathFR = os.path.normpath((application_path + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\FOREST")
+    pathHL = os.path.normpath((application_path + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\HIGHLAND")
+    pathMN = os.path.normpath((application_path + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\MOUNTAIN")
+    pathST = os.path.normpath((application_path + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\STEPPE")
+    pathSW = os.path.normpath((application_path + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\SWAMP")
 
     get_biome_subfolders(pathFR)
     get_biome_subfolders(pathHL)
@@ -429,10 +440,7 @@ if __name__ == "__main__":
 
     locations = []
     get_locations(False)
-    mover.source = "C:/AlbionOnlineSource/client/unity/Assets/Resources/Prefabs/ENV_PREFABS/BIOMES/MOUNTAIN/SET_MOUNTAIN_RED/"
-    mover.target = "C:/AlbionOnlineSource/client/unity/Assets/Resources/Prefabs/ENV_PREFABS/BIOMES/MOUNTAIN/SET_MOUNTAIN_RED/"
-    mover.update_file_list()
-
+    
     biomesFolder = (os.path.normpath((os.getcwd() + os.sep + os.pardir) + os.sep + os.pardir + "\\client\\unity\\Assets\\Resources\\Prefabs\\ENV_PREFABS\\BIOMES\\"))
     biomesFolder = biomesFolder.replace("\\", "/") 
     print (biomesFolder)
