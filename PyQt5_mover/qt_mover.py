@@ -380,9 +380,64 @@ def placeholder_biome_level(string):
 
 
 def REplace_string(phrase, string, replaceWith):
+    replaceWith = ("_"+ replaceWith + "_")
+    phrase = ("_"+ phrase + "_")
     output = re.sub(phrase, replaceWith, string, flags=re.IGNORECASE)
+
+    # reset words
+    phrase = remove_first_last_letter(phrase)
+    replaceWith = remove_first_last_letter(replaceWith)
+
+    replaceWith = ("/"+ replaceWith + "_")
+    phrase = ("/"+ phrase + "_")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+    
+    # reset words
+    phrase = remove_first_last_letter(phrase)
+    replaceWith = remove_first_last_letter(replaceWith)
+
+    replaceWith = ("_"+ replaceWith + "/")
+    phrase = ("_"+ phrase + "/")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+
+    # reset words
+    phrase = remove_first_last_letter(phrase)
+    replaceWith = remove_first_last_letter(replaceWith)
+
+    replaceWith = ("/"+ replaceWith + "/")
+    phrase = ("/"+ phrase + "/")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+
+    # reset words
+    phrase = remove_first_last_letter(phrase)
+    replaceWith = remove_first_last_letter(replaceWith)
+
+    replaceWith = (replaceWith + "_")
+    phrase = ("^"+ phrase + "_")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+
+    # reset words
+    phrase = remove_first_last_letter(phrase)
+    replaceWith = replaceWith[:-1]
+
+    replaceWith = ("/"+ replaceWith + "")
+    phrase = ("/"+ phrase + "")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+
+    # reset words
+    phrase = phrase[1:]
+    replaceWith = replaceWith[1:]
+
+    replaceWith = ("_"+ replaceWith + "")
+    phrase = ("_"+ phrase + "")
+    output = re.sub(phrase, replaceWith, output, flags=re.IGNORECASE)
+
     return output
 
+def remove_first_last_letter(word):
+    word = word[:-1]
+    word = word[1:]
+    return word
 
 def change_biome(location, sourceOrTarget):
     x = placeholder_biome_level(sourceOrTarget)
