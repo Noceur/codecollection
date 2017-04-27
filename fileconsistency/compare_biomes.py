@@ -10,44 +10,65 @@ def loop_files(filtered=False):
 	for subdir, dirs, files in os.walk(currentDir):
 		#for file in files:
 		#	print (os.path.join(subdir, file))
-		if "_DO_NOT_MIGRATE" in subdir.upper() and filtered == True:
-			print (subdir)
-			continue
-		#if counter < 8000:
-		for file in files:
-			fileBiome = ((re.search("[^_]*", file)))
-			fileLevel = ((re.search("(?<=_)(.*?)(?=_)", file)))
-			if  fileBiome.group(0).upper() == "FOREST" or fileBiome.group(0).upper() == "STEPPE" or fileBiome.group(0).upper() == "MOUNTAIN" or fileBiome.group(0).upper() == "HIGHLAND" or fileBiome.group(0).upper() == "SWAMP":
-				if  fileLevel.group(0).upper() == "GREEN" or fileLevel.group(0).upper() == "RED" or fileLevel.group(0).upper() == "DEAD":
-					if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
-						#print (file[:-7])
-						dirCurrent = subdir.split(os.path.sep)[-1] #Get current directory
-						#print (subdir.split(os.path.sep)[-1])
-						counter += 1
-						stripped = re.findall("(?:.*?_){2}(.*)", file) #Matches everything after the second underscore
-						stripped = (stripped[0][:-7])
-						#stripped = stripped[0]
-						#if fileBiome:
-						#	print (fileBiome.group(0))
-						#if fileLevel:
-						#	print (fileLevel.group(0))
-						#print ((re.search("(?<=_)(.*?)(?=_)", file)).group(0))
-						#tilejob = tile(stripped)
-						#print (file)
-						#print (stripped[0])
-						#print (search_list(stripped))
-						search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0), dirCurrent)
-						#print (counter)
-						
 
-						#print (subdir)
-						#print (stripped)
-		#for directory in dirs:
-		#	print (directory)
+		#if counter < 8000:
+			for file in files:
+				if "_DO_NOT_MIGRATE" in subdir.upper() and filtered == True:
+					fileBiome = ((re.search("[^_]*", file)))
+					fileLevel = ((re.search("(?<=_)(.*?)(?=_)", file)))
+					if  fileBiome.group(0).upper() == "FOREST" or fileBiome.group(0).upper() == "STEPPE" or fileBiome.group(0).upper() == "MOUNTAIN" or fileBiome.group(0).upper() == "HIGHLAND" or fileBiome.group(0).upper() == "SWAMP":
+						if  fileLevel.group(0).upper() == "GREEN" or fileLevel.group(0).upper() == "RED" or fileLevel.group(0).upper() == "DEAD":
+							if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
+								#print (file, "\n", subdir)
+								exceptionFound = re.findall("(?:.*?_){2}(.*)", file)
+								exceptionFound = exceptionFound[0][:-7]
+								#print (exceptionFound)
+								exceptions.append(exceptionFound)
+								#print (subdir)
+								continue
+				fileBiome = ((re.search("[^_]*", file)))
+				fileLevel = ((re.search("(?<=_)(.*?)(?=_)", file)))
+				if  fileBiome.group(0).upper() == "FOREST" or fileBiome.group(0).upper() == "STEPPE" or fileBiome.group(0).upper() == "MOUNTAIN" or fileBiome.group(0).upper() == "HIGHLAND" or fileBiome.group(0).upper() == "SWAMP":
+					if  fileLevel.group(0).upper() == "GREEN" or fileLevel.group(0).upper() == "RED" or fileLevel.group(0).upper() == "DEAD":
+						if not ".meta" in file and not ".py" in file and not "_" in file[:1]:
+							#print (file[:-7])
+							dirCurrent = subdir.split(os.path.sep)[-1] #Get current directory
+							#print (subdir.split(os.path.sep)[-1])
+							counter += 1
+							stripped = re.findall("(?:.*?_){2}(.*)", file) #Matches everything after the second underscore
+							stripped = (stripped[0][:-7])
+							#stripped = stripped[0]
+							#if fileBiome:
+							#	print (fileBiome.group(0))
+							#if fileLevel:
+							#	print (fileLevel.group(0))
+							#print ((re.search("(?<=_)(.*?)(?=_)", file)).group(0))
+							#tilejob = tile(stripped)
+							#print (file)
+							#print (stripped[0])
+							#print (search_list(stripped))
+							for entry in exceptions:
+								#print (entry)
+								print (counter)
+								#print (stripped)
+								if stripped == entry:
+									print ('found exception', stripped)
+									exceptions.remove(entry)
+									search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0), dirCurrent, True)
+								else:
+									search_list(stripped, subdir, fileBiome.group(0), fileLevel.group(0), dirCurrent)
+								continue
+							#print (counter)
+							
+
+							#print (subdir)
+							#print (stripped)
+			#for directory in dirs:
+			#	print (directory)
 
 	print (counter)
 
-def search_list(item, location, biome, style, dirCurrent):
+def search_list(item, location, biome, style, dirCurrent, inNotMigrate=False):
 	#found = False
 	for entry in prefabList:
 		#print (entry['prefab'])
@@ -56,14 +77,14 @@ def search_list(item, location, biome, style, dirCurrent):
 		if item == entry['prefab']:
 			#print (entry['prefab'])
 			#print (item)
-			add_biome_style(item, location, biome, style, dirCurrent)
+			add_biome_style(item, location, biome, style, dirCurrent, inNotMigrate)
 			return
-	add_list(item, location, biome, style, dirCurrent)
+	add_list(item, location, biome, style, dirCurrent, inNotMigrate)
 	return
 	#return False
 
-def add_list(item, location, biome, style, dirCurrent):
-	item_dict = {'prefab': "", 'dirCurrent': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': [], 'locConsistency': True}
+def add_list(item, location, biome, style, dirCurrent, inNotMigrate):
+	item_dict = {'prefab': "", 'dirCurrent': "", 'location': [], 'SW': False, 'ST': False, 'MN': False, 'HL': False, 'FR': False, 'SWStyle': [], 'STStyle': [], 'MNStyle': [], 'HLStyle': [], 'FRStyle': [], 'locConsistency': True, 'inNotMigrate': False}
 
 	style = style_abr(style)
 
@@ -77,10 +98,12 @@ def add_list(item, location, biome, style, dirCurrent):
 	item_dict['dirCurrent'] = dirCurrent
 	item_dict[biome_abr(biome)] = True
 	item_dict[(biome_abr(biome)+'Style')].append(style)
+	if inNotMigrate == True:
+		item_dict['inNotMigrate'] = True
 
 	prefabList.append(item_dict)
 
-def add_biome_style(item, location, biome, style, dirCurrent):	
+def add_biome_style(item, location, biome, style, dirCurrent, inNotMigrate):	
 	style = style_abr(style)
 
 	# remove biome and level (red, dead, green) from dirCurrent
@@ -90,6 +113,8 @@ def add_biome_style(item, location, biome, style, dirCurrent):
 		if item == entry['prefab']:
 			if entry['dirCurrent'] != dirCurrent:
 				entry['locConsistency'] = False
+			if inNotMigrate == True:
+				entry['inNotMigrate'] = True
 			entry['location'].append(location) 
 			entry[biome_abr(biome)] = True
 			entry[(biome_abr(biome)+'Style')].append(style)
@@ -193,7 +218,7 @@ def data_output(silent=True, onlyMissing=False):
 		#print (appendLine)
 		if onlyMissing:
 			if "SWAMP	 D G R" in appendLine and "STEPPE	 D G R" in appendLine and "MOUNTAIN	 D G R" in appendLine and "HIGHLAND	 D G R" in appendLine and "FOREST	 D G R" in appendLine:
-				print (appendLine)
+		#		print (appendLine)
 				addLine = False
 
 		if not each['locConsistency']:
@@ -212,6 +237,10 @@ def data_output(silent=True, onlyMissing=False):
 			for entry in each['location']:
 				print (entry)
 			print ("\n")
+
+		if each['inNotMigrate'] == True:
+			print ("we got this far.")
+			appendLine += ("\tIn _DO_NOT_MIGRATE")
 
 		if addLine:
 			writeList.append(appendLine)
