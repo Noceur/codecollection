@@ -7,33 +7,23 @@ from oauth2client.service_account import ServiceAccountCredentials
 from xml.etree import ElementTree
 
 
-doc = 'world_live/world.xml'
-doc2 = '0201_WRL_SW_T5_KPR_ROY.cluster.xml'
 no_data_added = True
  
  
-# use creds to create a client to interact with the Google Drive API
+# google API credentials
+# ===================================================
+
 
 scope = ['https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_name('Cluster analysis-bac77d2732de.json', scope)
 client = gspread.authorize(creds)
- 
-# Find a workbook by name and open the first sheet
-# Make sure you use the right name here.
 
-sheet = client.open("test_analysis").sheet1
+sheet = client.open("cluster_analysis").sheet1
+
+
+# ===================================================
 
 row_count = 1
- 
-# Extract and print all of the values
-#list_of_hashes = sheet.get_all_records()
-#print(list_of_hashes)
-#print (sheet.get_all_values())
-
-
-#sheet.update_acell(loc("e", "10"), "test")
-
-
 
 
 class cluster():
@@ -114,8 +104,12 @@ def get_layer_name(template, layerid):
 			if not "tile" in item2.tag:
 				for item3 in item2:
 					#print (item3.attrib['name'])
-					if layerid == item3.attrib['id']:
-						return item3.attrib['name']
+					try:
+						#print (item3.attrib['name'])
+						if layerid == item3.attrib['id']:
+							return item3.attrib['name']
+					except: 
+						continue
 	return "LayerId incorrect(?)"
 
 
